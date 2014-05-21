@@ -18,9 +18,7 @@ install the prerequisite software (please note that '$' means that it
 should be run on the command-line terminal):
 
 ```
-$ sudo add-apt-repository ppa:richarvey/nodejs
-$ sudo apt-get update
-$ sudo apt-get install npm ant make g++
+$ sudo apt-get install nodejs-legacy npm ant make g++
 ```
 
 Lobby App Installation
