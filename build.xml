@@ -4,6 +4,9 @@
   <property name="SHELL_CMD" value="/bin/sh" />
   <property name="SHELL_OPT" value="-c" />
 
+  <property name="mocha" value="node_modules/mocha/bin/mocha" />
+  <property name="jscoverage" value="node_modules/mocha/bin/jscoverage" />
+
   <property environment="env" />
 
   <target name="clean">
@@ -59,7 +62,7 @@
   </target>
 
   <target name="test" depends="database-dev">
-    <exec executable="mocha">
+    <exec executable="${mocha}">
       <env key="LOBBY_APP_QUIET" value="1" />
     </exec>
   </target>
@@ -71,7 +74,7 @@
     </exec>
   </target>
   <target name="coverage">
-    <exec executable="jscoverage">
+    <exec executable="${jscoverage}">
       <arg value="--no-highlight" />
       <arg value="routes" />
       <arg value="routes-cov" />
@@ -80,7 +83,7 @@
       <env key="LOBBY_APP_QUIET" value="1" />
       <env key="LOBBY_APP_COV" value="1" />
       <arg value="${SHELL_OPT}" />
-      <arg value="mocha -R html-cov &gt; build/coverage.html" />
+      <arg value="${mocha} -R html-cov &gt; build/coverage.html" />
     </exec>
     <exec executable="rm">
       <arg value="-rf" />

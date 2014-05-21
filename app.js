@@ -26,11 +26,16 @@ var express = require('express')
   , path = require('path');
 
 var fs = require('fs');
-var rest = require('restler');
+var util = require('util');
 var moment = require('moment');
+var request = require('request');
+var pdfkit = require('pdfkit');
+var temp = require('temp');
+
 var SqliteStore = require('./sqlite-store');
 var db = require('./database');
 var print = require('./print');
+var nconf = require('nconf').file('config.json');
 
 var app = express();
 
@@ -98,7 +103,9 @@ app.get('/back', function(req, res) {
 });
 
 app.get('/validate_host', function(req, res) {
-  db.Host.where({ name: req.param('host_name') }).count(db.connection, function(err, count) {
+  db.Host.where(
+    'name = ? COLLATE NOCASE', req.param('host_name')
+  ).count(db.connection, function(err, count) {
     if (err) throw err;
 
     res.send(count > 0);
@@ -260,10 +267,16 @@ app.post('/docusign_test', function(req, res) {
     , "content-type": "application/json"
     , "accept": "application/json"
   }};
-
   var url = 'https://' + env + '.docusign.net/restapi/v2/login_information';
-  rest.get(url, headers).on('complete', function(result) {
-    res.send(!('errorCode' in result)); // return true if valid account
+
+  var options = {
+    url: url,
+    headers: headers,
+  };
+
+  request.get(options, function(error, response, body) {
+    //var json = JSON.parse(body);
+    res.send(!('errorCode' in response)); // return true if valid account
   });
 });
 
@@ -313,19 +326,24 @@ app.get('/dsrest_init', function(req, res) {
 
     req.session.user.login_url = 'https://' + ds_env + '.docusign.net/restapi/v2/login_information';
 
+    var url = req.session.user.login_url;
+    var headers = req.session.user.rest_headers.headers;
 
     // contact DS now
-    var url = req.session.user.login_url;
-    var headers = req.session.user.rest_headers;
+    var options = {
+      url: url,
+      headers: headers,
+    };
 
     print._('request: ' + url + '\n  ' + JSON.stringify(headers));
-    rest.get(url, headers).on('complete', function(result) {
-      print._('response: ' + '\n  ' + JSON.stringify(result));
+    request.get(options, function(error, response, body) {
+      var json = JSON.parse(body);
+      print._('response: ' + '\n  ' + JSON.stringify(json));
 
-      if ('loginAccounts' in result)
-        req.session.user.base_url = result['loginAccounts'][0]['baseUrl'];
+      if ('loginAccounts' in json)
+        req.session.user.base_url = json.loginAccounts[0].baseUrl;
 
-      res.send('errorCode' in result);
+      res.send('errorCode' in json);
     });
   });
 });
@@ -333,52 +351,115 @@ app.get('/dsrest_init', function(req, res) {
 app.get('/dsrest_create_envelope', function(req, res) {
   var name = req.session.user.first_name + ' ' + req.session.user.last_name;
   var email = req.session.user.email;
-  var template = req.session.user.template_guid;
-  var headers = req.session.user.rest_headers;
   var url = req.session.user.base_url + '/envelopes';
 
-  var data = {
-    "templateId": template,
-    "templateRoles": [
-      { "email": email
-      , "name": name
-      , "roleName": "Signer"
-      , "clientUserId": "1"
-      }
-    ], "status": "sent"
+  var headers = {
+    'X-DocuSign-Authentication': req.session.user.rest_headers.headers['X-DocuSign-Authentication'],
   };
+  headers['content-type'] = 'multipart/form-data';
+
+  var cc_recipients = [];
+  var cc_data = nconf.get('DS_SEND_CC_RECIPIENTS');
+  for (var i in cc_data) {
+    cc_recipients.push({
+      name: cc_data[i][0],
+      email: cc_data[i][1],
+      routingOrder: 2,
+      recipientId: parseInt(i, 10) + 2,
+    });
+  }
+
+  var data = {
+    recipients: {
+      signers: [{
+        name: name,
+        email: email,
+        recipientId: 1,
+        routingOrder: 1,
+        clientUserId: 1,
+      }],
+      carbonCopies: cc_recipients,
+    },
+    emailSubject: nconf.get('DS_SEND_EMAIL_SUBJECT'),
+    documents: [{
+      name: 'document.pdf',
+      documentId: 1,
+    }],
+    status: 'sent',
+  };
+
+  var tabMap = {
+    name: 'fullNameTabs',
+    signature: 'signHereTabs',
+    date: 'dateSignedTabs',
+  };
+
+  var tabConfig = nconf.get('DS_SEND_ANCHOR_TAGS');
+  data['recipients']['signers'][0]['tabs'] = {};
+  for (var prop in tabConfig) {
+    var key = tabMap[prop];
+
+    data['recipients']['signers'][0]['tabs'][key] = [{
+      tabLabel: prop,
+      documentId: 1,
+      pageNumber: tabConfig[prop]['pageNumber'],
+      xPosition: tabConfig[prop]['xPosition'],
+      yPosition: tabConfig[prop]['yPosition'],
+    }];
+  }
+
+  var options = {
+    url: url,
+    headers: headers,
+    multipart: [{
+      'Content-Type': 'application/json',
+      'Content-Disposition': 'form-data',
+      body: JSON.stringify(data),
+    }, {
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'file; filename="document.pdf"; documentId=1',
+      body: fs.readFileSync(path.join(__dirname, 'document.pdf')),
+    }],
+  };
+
   print._('request: ' + url + '\n  ' + JSON.stringify(data));
+  request.post(options, function(error, response, body) {
+    print._('response: ' + '\n  ' + body);
+    body = JSON.parse(body);
 
-  rest.postJson(url, data, headers).on('complete', function(result) {
-    print._('response: ' + '\n  ' + JSON.stringify(result));
-
-    if ('uri' in result)
+    if ('uri' in body)
       req.session.user.view_url = req.session.user.base_url +
-                                  result['uri'] + '/views/recipient';
+                                  body.uri + '/views/recipient';
 
-    res.send('errorCode' in result);
+    res.send('errorCode' in body);
   });
 });
 
 app.get('/dsrest_iframe_url', function(req, res) {
   var name = req.session.user.first_name + ' ' + req.session.user.last_name;
   var email = req.session.user.email;
-  var headers = req.session.user.rest_headers;
+  var headers = req.session.user.rest_headers.headers;
   var exit = 'http://' + req.headers.host + '/return';
   var url = req.session.user.view_url;
 
-  var data =
-    { "authenticationMethod": "email"
-    , "email": email
-    , "returnUrl": exit
-    , "userName": name
-    , "clientUserId": "1"
+  var data = {
+    authenticationMethod: "email",
+    email: email,
+    returnUrl: exit,
+    userName: name,
+    clientUserId: 1,
   };
-  print._('request: ' + url + '\n  ' + JSON.stringify(data));
 
-  rest.postJson(url, data, headers).on('complete', function(result) {
-    print._('response: ' + '\n  ' + JSON.stringify(result));
-    res.send(result);
+  var options = {
+    url: url,
+    headers: headers,
+    json: data,
+  };
+
+  print._('request: ' + url + '\n  ' + JSON.stringify(data));
+  request.post(options, function(error, response, body) {
+    print._('response: ' + '\n  ' + JSON.stringify(body));
+    res.send(body);
   });
 });
 
@@ -386,44 +467,64 @@ app.get('/dsrest_send_notification', function(req, res) {
   var guest_name = req.session.user.first_name + ' ' + req.session.user.last_name;
   var host_name = req.query.host_name;
 
-  db.Host.where('name = ?' , host_name).first(db.connection, function(err, host) {
+  db.Host.where('name = ? COLLATE NOCASE', host_name).first(db.connection, function(err, host) {
     if (err) throw err;
 
     var url = req.session.user.base_url + '/envelopes';
-    var data =
-      { 'emailSubject': ('Your guest, ' + guest_name + ', has arrived.')
-      , 'documents': [
-          { 'documentId': '1'
-          , 'name': 'Host Notification'
-        }]
-      , 'recipients': { 'carbonCopies': [
-          { 'email': host.email
-          , 'name': host.name
-          , 'recipientId': '123'
-          , 'routingOrder': '1'
-        }]}
-      , 'status': 'sent'
+
+    var headers = {
+      'X-DocuSign-Authentication': req.session.user.rest_headers.headers['X-DocuSign-Authentication'],
+    };
+    headers['content-type'] = 'multipart/form-data';
+
+    var data = {
+      recipients: {
+        carbonCopies: [{
+          name: host.name,
+          email: host.email,
+          recipientId: 1,
+        }],
+      },
+      emailSubject: 'Your guest, ' + guest_name + ', has arrived.',
+      documents: [{
+        name: 'Host Notification',
+        documentId: 1,
+      }],
+      status: 'sent',
     };
 
+    // generate the host notification pdf
     var time = moment();
-    var content = 'Your guest, ' + guest_name + ', has arrived on ' + time.format('MMMM D, YYYY') + ' at ' + time.format('h:mm A') + '.';
+    var content = util.format('Your guest, %s, has arrived on %s at %s.', guest_name, time.format('MMMM D, YYYY'), time.format('h:mm A'));
+    var doc = new pdfkit();
+    doc.text(content);
+    var notification = temp.path('lobby');
 
-    var form_data = '\n--myBoundary\nContent-Type: application/json\nContent-Disposition: form-data\n\n' + JSON.stringify(data) + '\n--myBoundary\nContent-Type:text/plain\nContent-Disposition: file; filename=”Host Notification"; documentid=1\n\n' + content + '\n--myBoundary--\n';
-    var form_headers =
-      { "X-DocuSign-Authentication": req.session.user.rest_headers.headers['X-DocuSign-Authentication']
-      , "content-type": "multipart/form-data; boundary=myBoundary"
-      , "content-length": form_data.length
-    };
+    doc.write(notification, function(err) {
+      if (err) throw err;
 
-    var options =
-      { headers: form_headers
-      , data: form_data
-    };
-    print._('request: ' + url + '\n  ' + JSON.stringify(data));
+      var options = {
+        url: url,
+        headers: headers,
+        multipart: [{
+          'Content-Type': 'application/json',
+          'Content-Disposition': 'form-data',
+          body: JSON.stringify(data),
+        }, {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': 'file; filename="notify.pdf"; documentId=1',
+          body: fs.readFileSync(notification),
+        }],
+      };
 
-    rest.post(url, options).on('complete', function(result) {
-      print._('response: ' + '\n  ' + JSON.stringify(result));
-      res.send('errorCode' in result);
+      print._('request: ' + url + '\n  ' + JSON.stringify(data));
+      request.post(options, function(error, response, body) {
+        print._('response: ' + '\n ' + body);
+        body = JSON.parse(body);
+
+        fs.unlinkSync(notification);
+        res.send('errorCode' in body);
+      });
     });
   });
 });

@@ -28,6 +28,14 @@ stmt.run(3, 'Joe', 'Schmoe', 'Personal', null, null, 'joe@example.org', 'mikey@e
 stmt.run(4, 'Some', 'Dude', 'Business', 'Acme, Inc.', 'Sales Engineer', 'somedude@example.com', 'mikey@example.org', null, moment().subtract('days', 1).valueOf(), null);
 stmt.run(5, 'Jane', 'Doe', 'Business', 'Acme, Inc.', 'Marketer', 'jane.doe@example.com', 'sspecial@example.com', null, moment().subtract('weeks', 1).valueOf(), null);
 stmt.run(6, 'Jennifer', 'Smith', 'Temporary Badge', null, null, 'jennifer@example.com', '', 'IDQ284', moment().subtract('days', 3).valueOf(), null);
+stmt.run(7, 'Ottoline', 'Snyder', 'Business', 'Acme, Inc.', 'Account Executive', 'temp1@example.com', 'sspecial@example.com', null, moment().subtract('weeks', 1).valueOf(), null);
+stmt.run(8, 'Madelina', 'Walker', 'Business', 'Acme, Inc.', 'Support', 'temp1@example.com', 'sspecial@example.com', null, moment().subtract('weeks', 1).valueOf(), null);
+stmt.run(9, 'Gil', 'Booner', 'Business', 'Acme, Inc.', 'Product Manager', 'temp3@example.com', 'sspecial@example.com', null, moment().subtract('weeks', 1).valueOf(), null);
+stmt.run(10, 'Talon', 'Wootton', 'Business', 'Acme, Inc.', 'QA engineer', 'temp78@example.com', 'sspecial@example.com', null, moment().subtract('weeks', 1).valueOf(), null);
+stmt.run(11, 'Topaz', 'Kimberly', 'Business', 'Acme, Inc.', 'Account Manager', 'temp22@example.com', 'sspecial@example.com', null, moment().subtract('weeks', 1).valueOf(), null);
+stmt.run(12, 'Janelle', 'Corey', 'Business', 'Acme, Inc.', 'Supervisor', 'temp12@example.com', 'sspecial@example.com', null, moment().subtract('weeks', 1).valueOf(), null);
+stmt.run(13, 'Ophelia', 'Haggard', 'Business', 'Acme, Inc.', 'Temp', 'temp14@example.com', 'sspecial@example.com', null, moment().subtract('weeks', 1).valueOf(), null);
+stmt.run(14, 'Darion', 'Griffin', 'Business', 'Acme, Inc.', 'Sales Engineer', 'temp8@example.com', 'sspecial@example.com', null, moment().subtract('weeks', 1).valueOf(), null);
 stmt.finalize();
 
 var hostStmt = db.prepare('INSERT INTO hosts VALUES (?, ?)');

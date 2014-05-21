@@ -15,7 +15,6 @@
  * PARTICULAR PURPOSE.
  */
 
-var rest = require('restler');
 var moment = require('moment');
 var db = require('../database');
 var print = require('../print');
@@ -85,10 +84,8 @@ exports.reason = function(req, res) {
     if (err) throw err;
 
     var reasons = [];
-    var access_keys = [];
     rows.forEach(function(row) {
       reasons.push(row.reason);
-      access_keys.push(row.access_key);
     });
 
     res.render('user/reason',
@@ -97,8 +94,7 @@ exports.reason = function(req, res) {
       , page_number: 2
       , total_pages: total_pages
       , reasons: reasons
-      , access_keys: JSON.stringify(access_keys)
-    });
+    });https://github.com/docusign/Lobby-App.git
   });
 };
 
@@ -271,24 +267,13 @@ exports.admin_menu = function(req, res) {
 
 exports.admin_history = function(req, res){
   if (req.session.is_admin) { 
-
-    var startTime;
-    if (req.param('time')) {
-      // only view history for a particular day
-      startTime = moment(req.param('time'), 'MM/DD/YYYY');
-    } else {
-      startTime = moment().startOf('day');
-    }
-
     db.Host.all(db.connection, function(err, rows) {
       var hosts = {};
       rows.forEach(function(row) {
         hosts[row.email] = row.name;
       });
 
-      db.Person.where('signin_time > ? AND signin_time < ?',
-        [startTime.valueOf(), moment(startTime).endOf('day').valueOf()]
-      ).all(db.connection, function(err, rows) {
+      db.Person.all(db.connection, function(err, rows) {
         if (err) throw err;
 
         var people = [];
@@ -309,6 +294,7 @@ exports.admin_history = function(req, res){
             , row.badge_number
             , moment(row.signin_time).format('M/D/YYYY h:mm A')
             , signout_time
+            , '' // column for sign-out button
           ]);
         });
 
@@ -316,7 +302,6 @@ exports.admin_history = function(req, res){
           { title: 'Visitor History'
           , style: 'admin'
           , people: JSON.stringify(people)
-          , date: JSON.stringify(startTime.format('dddd, MMMM D, YYYY'))
         });
       });
     });
@@ -362,7 +347,6 @@ exports.admin_reasons = function(req, res){
         reasons.push(
           [ row.id
           , row.reason
-          , row.access_key
           , row.show_company
           , row.template_guid
           , row.show_host

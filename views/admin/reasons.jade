@@ -7,29 +7,13 @@ block scripts
   include ../includes/js/data-tables
   include ../includes/js/jeditable
 
-  script
+  script.
     var oTable;
     var editHash;
-    var editUrl = 'admin_reasons_edit';
-
-    function fnClickAddRow() {
-      var last_row_id = $('tr:last > td:first').text();
-      var next_row_id = parseInt(last_row_id, 10) + 1;
-      $('#reasons').dataTable().fnAddData(
-        [ next_row_id
-        , '(click to edit)'
-        , '(click to edit)'
-        , '(click to edit)'
-        , '(click to edit)'
-        , '(click to edit)'
-        , '(click to edit)'
-      ]);
-      $.post(editUrl, {'add': true});
-
-      oTable.$('td:not(:first)').editable(editUrl, editHash);
-    }
 
     $(document).ready(function() {
+      var editUrl = 'admin_reasons_edit';
+
       oTable = $('#reasons').dataTable(
         { 'aaData': !{reasons}
         , 'aaSorting': []
@@ -37,7 +21,6 @@ block scripts
             /* id */ { "bSearchable": false,
                        "bVisible":    true },
             /* reason */             null,
-            /* access key */         null,
             /* show company page? */ null,
             /* template id */        null,
             /* show host page? */    null,
@@ -59,7 +42,23 @@ block scripts
 
       oTable.$('td:not(:first)').editable(editUrl, editHash);
 
-      $('tbody > tr').append('<td><a id="delete" href="javascript:void(0)">X</a></td>');
+      $('#add_button').click(function() {
+        var last_row_id = $('tr:last > td:first').text();
+        var next_row_id = parseInt(last_row_id, 10) + 1;
+        $('#reasons').dataTable().fnAddData(
+          [ next_row_id
+          , '(click to edit)'
+          , '(click to edit)'
+          , '(click to edit)'
+          , '(click to edit)'
+          , '(click to edit)'
+        ]);
+        $.post(editUrl, {'add': true});
+
+        oTable.$('td:not(:first)').editable(editUrl, editHash);
+      });
+
+      $('tbody > tr').append('<td><a id="delete" href="#">X</a></td>');
       $('a#delete').click(function() {
         var tr_elem = $(this).parent().parent();
         var row_id = tr_elem.find('td:first').text();
@@ -82,7 +81,6 @@ block content
         tr
           th#id #
           th#reason Reason
-          th#access_key Access Key
           th#show_company Show Company Page?
           th#template_guid Template ID
           th#show_host Show Host Page?
@@ -90,7 +88,7 @@ block content
 
     br
     br
-    a(onclick="fnClickAddRow();", href="javascript:void(0);") Click to add a new row
+    input.button#add_button(type="button", value="Click to add a new reason")
     br
     br
 

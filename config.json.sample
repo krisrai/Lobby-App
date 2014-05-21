@@ -1,0 +1,24 @@
+{
+  "DS_SEND_EMAIL_SUBJECT": "Sample Document",
+  "DS_SEND_CC_RECIPIENTS": [
+    ["Person One", "person1@example.com"],
+    ["Person Two", "person2@example.com"]
+  ],
+  "DS_SEND_ANCHOR_TAGS": {
+    "name": {
+      "pageNumber": "1",
+      "xPosition": "300",
+      "yPosition": "100"
+    },
+    "signature": {
+      "pageNumber": "1",
+      "xPosition": "200",
+      "yPosition": "600"
+    },
+    "date": {
+      "pageNumber": "1",
+      "xPosition": "150",
+      "yPosition": "700"
+    }
+  }
+}
