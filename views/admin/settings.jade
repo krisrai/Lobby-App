@@ -64,8 +64,51 @@ block scripts
       });
 
       hook_ajax_button('user_timeout', 'timeout', 'user_timeout');
-      $.get('timeout', function(time) {
-        $('#user_timeout > [type=text]').val(time);
+      $('#user_timeout > [type=text]').val('!{user_timeout}');
+
+      $('#auto_signout > [type=checkbox]').prop('checked', !{auto_signout_enabled});
+      $('#auto_signout > [type=text]').val('!{auto_signout_time}');
+      $('#auto_signout img').css('visibility', 'hidden');
+      $('#auto_signout :button').click(function() {
+        var signout_enabled = $('#auto_signout > [type=checkbox]').prop('checked');
+        var signout_time = $('#auto_signout > [type=text]').val();
+        if (signout_enabled && !signout_time) {
+          alert('Auto signout requires non-empty signout time, please type in the signout time.');
+        } else {  // update
+            $('#auto_signout img').css('visibility', 'visible');
+            var data = {
+              'signout_enabled': signout_enabled
+              , 'signout_time': signout_time
+            };
+            $.post('admin_auto_signout', data, function() {
+                $('#auto_signout img').css('visibility', 'hidden');
+              }
+            );
+        }
+      });
+
+      $('#report > [name=dayandtime]').val('!{report_day_time}');
+      $('#report > [name=emails]').val('!{report_emails}');
+      $('#report > [name=numofdays]').val('!{report_num_days}');
+      $('#report img').css('visibility', 'hidden');
+      $('#report :button').click(function() {
+        var dayandtime = $('#report > [name=dayandtime]').val();
+        var emails = $('#report > [name=emails]').val();
+        var numofdays = $('#report > [name=numofdays]').val();
+        if (!dayandtime && !emails) {
+          alert('Report scheduling requires both day-and-time and email list.');
+        } else {  // update
+            $('#report img').css('visibility', 'visible');
+            var data = {
+              'dayandtime': dayandtime
+              , 'emails': emails
+              , 'numofdays': numofdays
+            };
+            $.post('admin_update_report', data, function() {
+                $('#report img').css('visibility', 'hidden');
+              }
+            );
+        }
       });
 
       $('#ds_env select').val('!{ds_env}'); // select
@@ -159,6 +202,25 @@ block content
       label Idle time period for user flow (in seconds)
       br
       input(type="text", size="50", autocomplete="off")
+      input(type="button", value="Update")
+      img(src="images/ajax-loader.gif")
+
+    .setting#auto_signout
+      label Schedule time for updating auto signout (format: hh:mm a, separate by comma)
+      br
+      input(type='checkbox')
+      label Sign all Visitors out at:
+      input(type='text', size='20', autocomplete="off")
+      input(type="button", value="Update")
+      img(src="images/ajax-loader.gif")
+
+    .setting#report
+      label Day and time to send report (format: day hh:mm a, day is a day of week 0 - 6 or Sun - Sat)
+      input(type='text', name='dayandtime', size='50', autocomplete="off")
+      label Email list to send report separated by comma
+      input(type='text', name='emails', size='50', autocomplete="off")
+      label Number of past days to report
+      input(type='text', name='numofdays', size='10', autocomplete="off")
       input(type="button", value="Update")
       img(src="images/ajax-loader.gif")
 

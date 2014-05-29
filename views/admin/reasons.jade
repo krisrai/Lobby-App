@@ -10,6 +10,7 @@ block scripts
   script.
     var oTable;
     var editHash;
+    var templateEditHash;
 
     $(document).ready(function() {
       var editUrl = 'admin_reasons_edit';
@@ -19,30 +20,61 @@ block scripts
         , 'aaSorting': []
         , 'aoColumns': [
             /* id */ { "bSearchable": false,
-                       "bVisible":    true },
+                       "bVisible":    true},
             /* reason */             null,
             /* show company page? */ null,
-            /* template id */        null,
+            /* template id */ {
+              'sClass': 'template'
+              },
             /* show host page? */    null,
             /* show badge page? */   null
           ]
         }
       );
 
-      editHash =
-        { submitdata: function(value, settings) {
+      // add id to template column
+      templates = oTable.$('td.template').each(function() {
+        //- console.log('setting template id: '+$(this).text());
+        $(this).attr('id', $(this).text());
+      });
+
+      console.log('table is created');
+
+      editHash = {
+        submitdata: function(value, settings) {
           var row_pos = oTable.fnGetPosition(this)[0] + 1;
           var column_pos = oTable.fnGetPosition(this)[1];
           return { "row_id": $('tr:nth-child(' + row_pos + ') > td:first').text()
                  , "column": $('th').eq(column_pos).attr('id')
           };
         }
+        , indicator: 'Saving...'
+        , tooltip: 'Click to edit...'
         , onblur: 'submit'
       };
 
-      oTable.$('td:not(:first)').editable(editUrl, editHash);
+      // $.extend() does not work, so copying the code
+      templateEditHash = {
+        submitdata: function(value, settings) {
+          var row_pos = oTable.fnGetPosition(this)[0] + 1;
+          var column_pos = oTable.fnGetPosition(this)[1];
+          return { "row_id": $('tr:nth-child(' + row_pos + ') > td:first').text()
+                 , "column": $('th').eq(column_pos).attr('id')
+          };
+        }
+        , indicator: 'Saving...'
+        , tooltip: 'Click to edit...'
+        , onblur: 'submit'
+        , type: 'select'
+        , loadurl: '/dsrest_templates'
+      };
 
-      $('#add_button').click(function() {
+      // not first and not template_id column
+      oTable.$('td:not(:first)').filter(':not(.template)').editable(editUrl, editHash);
+      // template td cells
+      oTable.$('td.template').editable(editUrl, templateEditHash);
+
+      $(document).on('click', '#add_button', function(e) {
         var last_row_id = $('tr:last > td:first').text();
         var next_row_id = parseInt(last_row_id, 10) + 1;
         $('#reasons').dataTable().fnAddData(
@@ -55,16 +87,28 @@ block scripts
         ]);
         $.post(editUrl, {'add': true});
 
-        oTable.$('td:not(:first)').editable(editUrl, editHash);
+        // not first and not template_id column
+        oTable.$('td:not(:first)').filter(':last').filter(':not(.template)').editable(editUrl, editHash);
+        // template td cells
+        oTable.$('td.template').filter(':last').editable(editUrl, templateEditHash);
+        // add delete button
+        $('tbody > tr:last').append('<td><a id="delete" href="#">X</a></td>');
       });
 
       $('tbody > tr').append('<td><a id="delete" href="#">X</a></td>');
-      $('a#delete').click(function() {
+      $(document).on('click', 'a#delete', function(e) {
         var tr_elem = $(this).parent().parent();
+        //- window.tr_elem = tr_elem;
+        // get the row index of the selected tr elment
+        var tr_pos = oTable.fnGetPosition(tr_elem[0]);
+        //- console.log('pos: '+tr_pos);
+
         var row_id = tr_elem.find('td:first').text();
         if (confirm('Are you sure you want to delete Reason #' + row_id + '?')) {
           $.post(editUrl, {'delete': true, 'row_id': row_id});
-          tr_elem.hide();
+          // remove the deleted row from Datatable and tr from DOM
+          oTable.fnDeleteRow(tr_pos);
+          tr_elem.remove();
         }
       });
     });

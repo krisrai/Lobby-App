@@ -25,7 +25,7 @@ block scripts
           $(this).val(''); // clear file path
         }
       });
-      $('#hosts_update > [type=button]').click(function() {
+      $('#hosts_update > [type=submit]').click(function() {
         if ($('#hosts_update > [type=file]')[0].files.length == 0) {
           return;
         }
@@ -40,11 +40,13 @@ block scripts
           contentType: file.type,
           success: function() {
             $('#hosts_update img').css('visibility', 'hidden');
+            //- setTimeout (function() {
+            //-   location.reload();
+            //-   }, 1000);
             location.reload();
           }
         });
       });
-
     });
 
 block content
@@ -59,6 +61,8 @@ block content
         tr
           th Email Address
           th Name
+    br
+    a.button#download(href="/download_hosts") Download Hosts
 
     br
     br
@@ -69,8 +73,9 @@ block content
       label Upload a new list of hosts (must be a CSV file; will get rid of the current list of hosts)
       br
       input(type="file", size="40")
-      input(type="button", value="Update")
+      input.button(type="submit", value="Update")
       img(src="images/ajax-loader.gif")
+
 
   include ../includes/admin_back
 
