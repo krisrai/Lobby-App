@@ -471,8 +471,10 @@ app.get('/dsrest_init', function(req, res) {
       ds_integrator_key = require('./default_integrator_key').ikey;
 
     docusignApi.login(ds_env, ds_account_name, ds_account_password, ds_integrator_key, function(err, base_url) {
-      if (err)
+      if (err) {
         res.send(true);
+        return;
+      }
 
       // save headers and base_url
       req.session.user.base_url = base_url;
