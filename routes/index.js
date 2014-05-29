@@ -94,7 +94,7 @@ exports.reason = function(req, res) {
       , page_number: 2
       , total_pages: total_pages
       , reasons: reasons
-    });https://github.com/docusign/Lobby-App.git
+    }); //https://github.com/docusign/Lobby-App.git
   });
 };
 
@@ -244,6 +244,11 @@ exports.admin_login = function(req, res) {
       , style: 'admin'
     });
   } else {
+    //TODO delete this
+    req.session.user = {
+      first_name: 'admin',
+      last_name: 'admin'
+    };
     res.redirect('/admin_menu');
   }
 };
@@ -254,7 +259,11 @@ exports.admin_menu = function(req, res) {
 
     if (setting.admin_password == req.param('password') || req.session.is_admin) {
       req.session.is_admin = true;
-
+      // set admin user to session
+      req.session.user = {
+        first_name: 'admin',
+        last_name: 'admin'
+      };
       res.render('admin/menu',
         { title: 'Admin Menu'
         , style: 'admin'
@@ -305,7 +314,6 @@ exports.admin_history = function(req, res){
         });
       });
     });
-
   } else {
     res.redirect('admin');
   }
@@ -325,11 +333,17 @@ exports.admin_settings = function(req, res){
         , style: 'admin'
         , companyName: setting.company_name
         , companyLocation: setting.company_location
+        , user_timeout: setting.user_timeout
         , ds_env: setting.ds_env
         , ds_account_name: setting.ds_account_name
         , ds_account_password: setting.ds_account_password
         , ds_integrator_key: key
         , admin_password: setting.admin_password
+        , auto_signout_time: setting.auto_signout_time
+        , auto_signout_enabled: setting.auto_signout_enabled
+        , report_day_time: setting.report_day_time
+        , report_num_days: setting.report_num_days
+        , report_emails: setting.report_emails
       });
     });
   } else {

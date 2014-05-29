@@ -53,6 +53,11 @@ exports.Setting = persist.define('Setting',
   , 'ds_account_name': type.STRING
   , 'ds_account_password': type.STRING
   , 'ds_account_key': type.STRING
+  , 'auto_signout_time': type.STRING
+  , 'auto_signout_enabled': type.BOOLEAN
+  , 'report_day_time': type.STRING
+  , 'report_num_days': type.INTEGER
+  , 'report_emails': type.STRING
 });
 
 exports.Reason = persist.define('Reason',

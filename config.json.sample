@@ -20,5 +20,19 @@
       "xPosition": "150",
       "yPosition": "700"
     }
+  },
+  
+  "MAIL": {
+    "transport": "SMTP",
+    "from_email": "peaklinuxer@gmail.com",
+    "SMTP" : {
+      "service": "Gmail",
+      "user": "your-email@gmail.com",
+      "pass": "your-password"
+    },
+    "SES": {
+      "AWSAccessKeyID": "AWSACCESSKEY",
+      "AWSSecretKey": "AWS/Secret/key"
+    }
   }
 }

@@ -44,6 +44,11 @@ CREATE TABLE settings
   , ds_account_name TEXT NOT NULL
   , ds_account_password TEXT NOT NULL
   , ds_account_key TEXT NOT NULL
+  , auto_signout_time TEXT
+  , auto_signout_enabled BOOLEAN DEFAULT false
+  , report_day_time TEXT
+  , report_num_days INTEGER DEFAULT 7
+  , report_emails TEXT
 );
 
 CREATE TABLE reasons
