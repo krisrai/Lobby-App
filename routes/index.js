@@ -94,7 +94,7 @@ exports.reason = function(req, res) {
       , page_number: 2
       , total_pages: total_pages
       , reasons: reasons
-    });https://github.com/docusign/Lobby-App.git
+    });
   });
 };
 
