@@ -352,80 +352,29 @@ app.get('/dsrest_create_envelope', function(req, res) {
   var name = req.session.user.first_name + ' ' + req.session.user.last_name;
   var email = req.session.user.email;
   var url = req.session.user.base_url + '/envelopes';
-
-  var headers = {
-    'X-DocuSign-Authentication': req.session.user.rest_headers.headers['X-DocuSign-Authentication'],
-  };
-  headers['content-type'] = 'multipart/form-data';
-
-  var cc_recipients = [];
-  var cc_data = nconf.get('DS_SEND_CC_RECIPIENTS');
-  for (var i in cc_data) {
-    cc_recipients.push({
-      name: cc_data[i][0],
-      email: cc_data[i][1],
-      routingOrder: 2,
-      recipientId: parseInt(i, 10) + 2,
-    });
-  }
+  var headers = req.session.user.rest_headers.headers;
+  var template_id = req.session.user.template_guid;
 
   var data = {
-    recipients: {
-      signers: [{
-        name: name,
-        email: email,
-        recipientId: 1,
-        routingOrder: 1,
-        clientUserId: 1,
-      }],
-      carbonCopies: cc_recipients,
-    },
-    emailSubject: nconf.get('DS_SEND_EMAIL_SUBJECT'),
-    documents: [{
-      name: 'document.pdf',
-      documentId: 1,
+    templateId: template_id,
+    templateRoles: [{
+      name: name,
+      email: email,
+      roleName: 'Signer',
+      clientUserId: 1,
     }],
     status: 'sent',
   };
 
-  var tabMap = {
-    name: 'fullNameTabs',
-    signature: 'signHereTabs',
-    date: 'dateSignedTabs',
-  };
-
-  var tabConfig = nconf.get('DS_SEND_ANCHOR_TAGS');
-  data['recipients']['signers'][0]['tabs'] = {};
-  for (var prop in tabConfig) {
-    var key = tabMap[prop];
-
-    data['recipients']['signers'][0]['tabs'][key] = [{
-      tabLabel: prop,
-      documentId: 1,
-      pageNumber: tabConfig[prop]['pageNumber'],
-      xPosition: tabConfig[prop]['xPosition'],
-      yPosition: tabConfig[prop]['yPosition'],
-    }];
-  }
-
   var options = {
     url: url,
     headers: headers,
-    multipart: [{
-      'Content-Type': 'application/json',
-      'Content-Disposition': 'form-data',
-      body: JSON.stringify(data),
-    }, {
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': 'file; filename="document.pdf"; documentId=1',
-      body: fs.readFileSync(path.join(__dirname, 'document.pdf')),
-    }],
+    json: data,
   };
 
   print._('request: ' + url + '\n  ' + JSON.stringify(data));
   request.post(options, function(error, response, body) {
     print._('response: ' + '\n  ' + body);
-    body = JSON.parse(body);
 
     if ('uri' in body)
       req.session.user.view_url = req.session.user.base_url +
