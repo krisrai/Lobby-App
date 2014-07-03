@@ -159,10 +159,28 @@ exports.email = function(req, res) {
 
 exports.sign = function(req, res) {
   req.session.user.email = (req.body.email.trim() == '') ? 'noreply@example.com' : req.body.email;
-
-  res.render('user/sign',
-    { title: 'Sign Document'
-    , style: 'style'
+  if(req.body.email.trim().length == 0 ) {
+    //No Email address given, hence we cannot recognize the user.
+    res.render('user/sign',
+           { title: 'Sign Document'
+           , style: 'style'
+        });
+    return;
+  }
+  
+  db.Person.where({ email: req.session.user.email})
+  .whereIn({visit_reason: ['Business', 'Interview']})
+  .all(db.connection, function(err, people) {
+    if (err) throw err;
+    
+    if (people.length > 0) {
+        res.redirect('/flow?flow_previous=/email');
+    } else {
+        res.render('user/sign',
+           { title: 'Sign Document'
+           , style: 'style'
+        });
+    }
   });
 };
 
