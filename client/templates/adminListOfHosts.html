@@ -1,0 +1,49 @@
+<!--header-->
+<header class="adminHeader logHistory">
+    <h1>List Of Hosts</h1>
+</header>
+
+<!--content-->
+<div class="content">
+    <div class="backAndFilter">
+        <a href="javascript:" data-ng-click="backToDashboard()">Back to Dashboard</a>
+
+        <div class="filter">
+            <!-- button-->
+                <input class="hostFile" type="file" data-ng-model="hostFile" onchange="angular.element(this).scope().updateHost(this)" accept=".csv"/>
+                <a href="javascript:" class="btn grayBtn">UPDATE</a>
+
+            <a href="/admin/download_hosts" class="btn grayBtn">DOWNLOAD</a>
+            <!--pagination-->
+            <div class="pagination">
+                <span class="view">View</span>
+                <select class="styled" data-ng-model="selection" data-ng-options="option for option in options" data-ng-change="changeCount(selection)">
+                </select>
+            </div>
+            <!--search input-->
+            <div class="searchCnt">
+                <input data-ng-model="$parent.search" type="text" class="search"/>
+                <a class="icon" href="javascript:"></a>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+    <!--form-->
+    <div class="table-responsive">
+        <table data-ng-table="tableParams" class="table hostTable table-striped">
+            <tr data-ng-repeat="user in $data">
+                <td data-title="'Email Address'">
+                    {{user.email}}
+                </td>
+                <td data-title="'Name'">
+                    {{user.name}}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="count">
+        Showing {{(tableParams.$params.count*tableParams.$params.page>hosts.length)?(hosts.length-(tableParams.$params.count*(tableParams.$params.page-1))):tableParams.$params.count}} of {{hosts.length}} entries
+    </div>
+</div>

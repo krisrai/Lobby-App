@@ -1,0 +1,30 @@
+<!--form-->
+<form  class="{{!validForm?'invalid':''}}" data-ng-submit="setWhoAreYouVisiting(visitingHost)">
+    <div class="row">
+        <div class="col-sm-12">
+            <label>Who Are You Visiting</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <input class="{{visitingHost===''?'empty':''}}" type="text" data-ng-model="visitingHost" placeholder="Who Are You Visiting" data-auto-complete ui-items="hosts" data-auto-focus/>
+        </div>
+    </div>
+
+    <div class="row btnRow">
+        <div class="col-sm-6">
+            <a href="javascript:" data-ng-click="stepBack()" class="btn grayBtn">BACK</a>
+        </div>
+        <div class="col-sm-6">
+            <button type="submit" class="btn yellowBtn">NEXT</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-offset-5 col-sm-1">
+            <div data-ng-show="ajaxLoading">
+                <img src="/i/ajax_loader_blue.gif"/>
+            </div>
+        </div>
+    </div>
+</form>

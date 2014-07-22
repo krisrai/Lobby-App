@@ -1,0 +1,23 @@
+<!--welcome message-->
+<div class="welcome-message">
+    <h2>Welcome to</h2>
+    <h1>{{companyInfo.company_name}}</h1>
+</div>
+<!--form-->
+<form class="{{!validForm?'invalid':''}}" name="signInForm" data-ng-submit="signIn(visitorName)">
+    <div class="row">
+        <div class="col-sm-12">
+            <label>Name</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <input type="text" class="" data-ng-model="visitorName" placeholder="Enter name" required data-ng-minlength=2 data-auto-focus data-auto-fill-sync/>
+        </div>
+    </div>
+    <div class="row">
+       <div class="col-sm-12">
+            <button type="submit" class="btn yellowBtn" data-ng-disabled="signInForm.$dirty && signInForm.$invalid">CONTINUE</button>
+        </div>
+    </div>
+</form>

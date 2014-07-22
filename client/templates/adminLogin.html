@@ -1,0 +1,26 @@
+<!--logo-->
+<header class="logo-login"><img class="logo" src="i/logo.png"/></header>
+
+<!--welcome message-->
+<div class="admin-message">
+    <h1>Administration Login</h1>
+    <p class="alertMsg" data-ng-show="alert">{{alert}}</p>
+</div>
+<!--form-->
+<form name="adminLogin" class="{{!validForm?'invalid':''}}" data-ng-submit="loginAdmin(password)">
+    <div class="row">
+        <div class="col-sm-12">
+            <label>Password</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <input id="password" class="{{password===''?'empty':''}}" type="password" data-ng-model="password" placeholder="Password" data-auto-focus data-auto-fill-sync/>
+        </div>
+    </div>
+    <div class="row btnRow">
+        <div class="col-sm-12">
+            <button type="submit" class="btn yellowBtn">CONTINUE</button>
+        </div>
+    </div>
+</form>

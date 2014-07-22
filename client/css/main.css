@@ -1,0 +1,726 @@
+html{
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 90px;
+    font-family: arial, helvetica, sans-serif;
+    /*background-color: #174293;*/
+    background: -ms-linear-gradient(top,#163e8b,#17408e);
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#163e8b), to(#17408e));
+    background: -moz-linear-gradient(top,#163e8b,#17408e);
+}
+body.noFooter {
+    margin-bottom: 0;
+    background: #fff;
+}
+
+a,a:active,a:focus{
+    outline: none;
+}
+/*footer style*/
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 90px;
+    background-color: #f5f5f5;
+    background: url("../i/footer-logo.png") no-repeat 50% 2px;
+}
+
+/*login page logo*/
+.logo-login{
+    height: 146px;
+    //background: url("../i/logo.png") no-repeat 50% 0;
+    margin-top: 60px; /*90 seems take too much space 90px;*/
+}
+
+    .logo-login img {
+        display: block;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        max-height: 150px;
+        max-width: 150px;
+    }
+
+@media (min-width:1100px){
+    .admin .logo-login{
+        margin-top: 115px;
+    }
+}
+/*welcome message*/
+.welcome-message,
+.reason-for-visit,
+.admin-message{
+    color: #fff;
+    text-align: center;
+    margin-top: 36px;
+}
+
+@media (min-width:1100px){
+    .admin .admin-message{
+        margin-top: 54px;
+    }
+}
+    .welcome-message h2{
+        display: block;
+        margin: 0;
+        letter-spacing: 1.5px;
+    }
+    .welcome-message h1,
+    .reason-for-visit h1,
+    .admin-message h1{
+        display: block;
+        font-size: 38px;
+        margin: 9px 0 0;
+        letter-spacing: 1.5px;
+    }
+    .welcome-message h1.greeting{
+        margin-top: -6px;
+        letter-spacing: 1px;
+    }
+    .welcome-message .sign-in-msg{
+        font-size: 23px;
+        line-height: 32px;
+        text-align: center;
+        margin-top: 28px;
+        letter-spacing: .5px;
+    }
+        .welcome-message .sign-in-msg span{
+            display: block;
+        }
+/*reason for visit*/
+.reason-for-visit{
+    margin-top: 30px;
+}
+.admin-message{
+    margin-top: 25px;
+    letter-spacing: 1px;
+}
+    .admin-message h1{
+        letter-spacing: 1px;
+    }
+
+/*form*/
+form{
+    display: block;
+    max-width: 465px;
+    margin: 48px auto 0;
+    min-height: 350px;
+}
+form[name=reason]{
+    margin-top: 36px;
+}
+form[name=nameAndTitle],
+form[name=emailForm],
+form[name=whoYoAreVisiting]{
+    margin-top: 45px;
+}
+form[name=welcomeForm]{
+    margin-top: 34px;
+}
+form[name=adminLogin]{
+    margin-top: 31px;
+}
+    form label{
+        display: block;
+        line-height: 20px;
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #fff;
+    }
+    form label.radio{
+        height: 60px;
+        line-height: 60px;
+        background-color: #2864c6;
+        margin: 0 0 27px;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    form input.radioInput{
+        opacity: 0;
+        position: absolute;
+    }
+    form label.select {
+        background: #357eeb url("../i/radio-checked.png") 100% 50% no-repeat;
+    }
+    form input[type=text],
+    form input[type=password],
+    form input[type=email]{
+        height: 56px;
+        line-height: 100%;
+        background: #fff;
+        border-radius: 2px;
+        width: 100%;
+        border: none;
+        color: #333;
+        padding-left: 15px;
+        font-size: 16px;
+        margin-bottom: 25px;
+        box-shadow:none;
+    }
+    form input[type=submit] {
+        width: 100%;
+    }
+    form button[type=submit] {
+        width: 100%;
+    }
+    form.invalid input[type=text].empty,
+    form.invalid input[type=password].empty,
+    form.invalid input[type=email].empty{
+        border: 1px solid red;
+        outline: none;
+        background: #ffe8e8;
+    }
+    form.invalid input[type=text].ng-dirty.ng-invalid,
+    form.invalid input[type=password].ng-dirty.ng-invalid,
+    form.invalid input[type=email].ng-dirty.ng-invalid{
+        border: 1px solid red;
+        outline: none;
+        background: #ffe8e8;
+    }
+
+    form input[type=text]::-webkit-input-placeholder { /* WebKit browsers */
+        color: #ccc;
+    }
+    form input[type=text]::-moz-placeholder {
+        color: #999;
+    }
+    form input[type=text]:-ms-input-placeholder {
+        color: #ccc;
+    }
+    form a#visitReasonNext {
+        margin-top: -9px;
+    }
+
+    /*button row style*/
+    form .btnRow {
+        min-height: 76px;
+    }
+    form[name=adminLogin] .btnRow {
+        min-height: 50px;
+        margin-top: 9px;
+    }
+        form .btnRow .btn{
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+    form[name=nameAndTitle] .btnRow {
+        padding-top: 5px;
+        min-height: 50px;
+    }
+
+    /*button style*/
+    .btn{
+        display: block;
+        height: 60px;
+        line-height: 47px;
+        font-size: 20px;
+        color: #333;
+        font-weight: bold;
+        border-radius: 2px;
+    }
+    .btn.yellowBtn{
+        background-color: #ffc820;
+    }
+    .btn.grayBtn{
+        background-color: #a7aaac;
+    }
+
+
+/*dashboard*/
+.dashboard{
+    max-width: 1248px;
+    margin: 34px auto 230px;
+}
+    .dashboard .row a{
+        display: block;
+        height: 250px;
+        border-radius: 2px;
+        background: #2864c6 url("../i/dashboard-icons.png") no-repeat;
+        padding-top: 165px;
+        color: #fff;
+        font-size: 23px;
+        text-align: center;
+        letter-spacing: .5px;
+        margin-bottom: 30px;
+    }
+    .dashboard .row a:active{
+        box-shadow: 0 0 20px rgba(0,0,0,.2) inset;
+    }
+    .dashboard .row a.app-settings{
+        background-position: 50% 57px;
+    }
+    .dashboard .row a.log-history{
+        background-position: 50% -193px;
+    }
+    .dashboard .row a.visit-reason{
+        background-position: 50% -443px;
+    }
+    .dashboard .row a.hosts{
+        background-position: 50% -693px;
+    }
+
+/*adminHeader*/
+.adminHeader{
+    display: block;
+    margin: 0 -15px;
+    padding-left: 105px;
+    padding-top: 22px;
+    height: 75px;
+    background: #1b49a0 url("../i/logo.png") no-repeat 36px 14px;
+    background-size: 45px 45px;
+}
+    .adminHeader h1{
+        font-size: 27px;
+        color: #fff;
+        margin: 0;
+    }
+
+/*main content*/
+.content{
+    padding: 13px 15px 0;
+    margin: 0 -15px;
+    background: #fff;
+}
+@media (min-width: 768px) {
+    .content{
+        padding: 13px 40px 0;
+    }
+}
+    .content .backAndFilter{
+        min-height: 73px;
+        padding: 20px 0 0;
+    }
+        .content .backAndFilter > a{
+            font-size: 13px;
+            color: #777777;
+            letter-spacing: .5px;
+            padding-left: 20px;
+            background: url("../i/back-icon.png") no-repeat 0 50%;
+            display: inline-block;
+            line-height: 35px;
+        }
+        .content .backAndFilter .filter{
+            float: right;
+        }
+            .content .backAndFilter .filter .searchCnt{
+                float: left;
+                position: relative;
+                margin-bottom: 10px;
+            }
+            .content .backAndFilter .filter .searchCnt a.icon{
+                position: absolute;
+                width: 31px;
+                height: 31px;
+                background: #fff url("../i/search-icon.png") no-repeat;
+                left: 1px;
+                top: 1px;
+            }
+            .content .backAndFilter .filter input.search{
+                width: 232px;
+                height: 33px;
+                padding-left: 35px;
+                border: 1px solid #dcdcdc;
+                border-radius: 2px;
+                float: right;
+            }
+            .content .backAndFilter .filter .filterBtn{
+                width: 40px;
+                height: 33px;
+                background: #dde2e5 url("../i/filter-icon.png") no-repeat 50% 50%;
+                display: inline-block;
+                margin-right: 27px;
+                float: left;
+                border-radius: 2px;
+                margin-bottom: 10px;
+            }
+            .content .backAndFilter .filter .filterBtn:hover{
+                background-color: #d4d9dc;
+            }
+            .content .backAndFilter .filter .pagination{
+                width: 104px;
+                height: 33px;
+                display: inline-block;
+                margin: 0 27px 10px 0;
+                float: left;
+                padding-left: 42px;
+                position: relative;
+            }
+            .content .backAndFilter .filter span.view{
+                margin-right: 12px;
+                line-height: 30px;
+                float: right;
+                color: #777777;
+                position: absolute;
+                left: 0;
+            }
+            .content .backAndFilter .filter .btn.grayBtn{
+                height: 33px;
+                font-size: 14px;
+                float: left;
+                line-height: 33px;
+                padding: 0 15px;
+                margin-right: 15px; //25px
+                background: #dde2e5;
+                margin-bottom: 10px;
+            }
+            .content .backAndFilter .filter .btn.grayBtn:hover{
+                background: #d4d9dc;
+            }
+
+    /*form style*/
+    .content form{
+        max-width: 100%;
+        margin: 0;
+        padding-bottom: 30px;
+    }
+        .content form fieldset{
+            padding-bottom: 35px;
+            border-bottom: 1px solid #e9e9e9;
+            margin-bottom: 28px;
+        }
+        .content form fieldset:last-child{
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .content form .section-title{
+            margin: 0;
+            font-size: 20px;
+            line-height: 26px;
+            border-bottom: none;
+            letter-spacing: .5px;
+        }
+        .content form .input-group{
+            width: 475px;
+            padding-right: 80px;
+        }
+        .content form .input-group.fluid{
+            width: 420px;
+            padding-right: 0;
+        }
+        .content form .input-group.environment{
+            margin-bottom: 10px;
+        }
+            .content form .input-group label{
+                color: #333;
+                font-size: 13px;
+                line-height: 20px;
+                padding: 8px 0;
+                margin: 10px 0 0;
+                letter-spacing: .2px;
+            }
+            .content form .input-group span{
+                color: #777773;
+                font-size: 13px;
+                display: block;
+                line-height: 10px;
+                margin-bottom: 17px;
+                letter-spacing: .8px;
+                font-weight: 400;
+            }
+            .content form .input-group span.sign-out{
+                margin-top: -7px;
+                margin-bottom: 0;
+                letter-spacing: .5px;
+            }
+            .content form .input-group span.custom-select-holder{
+                margin-top: -10px;
+                margin-bottom: 0;
+                letter-spacing: .1px;
+            }
+            .content form .input-group span.day-select-holder{
+                margin-bottom: 7px;
+            }
+                .content form .input-group span label{
+                    display: inline-block;
+                    margin: 12px 0 0;
+                    padding: 0;
+                }
+                .content form .input-group label span{
+                    display: inline-block;
+                    letter-spacing: .5px;
+                    margin: 21px 0 0;
+                }
+                    .content form .input-group span label input[type=text]{
+                        width: 44px;
+                        height: 30px;
+                        margin: 0 6px 0 5px;
+                        padding-left: 12px;
+                        padding-right: 12px;
+                    }
+                    .content form .input-group span label input[type=text]:disabled{
+                        background: #fbfbfb;
+                    }
+                .content form .input-group span label.checkbox{
+                    display: inline-block;
+                    margin: 12px 0 0;
+                    padding: 0;
+                    height: 20px;
+                    width: 35px;
+                    background: url("../i/check-box.png") no-repeat;
+                    cursor: pointer;
+                    position: relative;
+                    top: 3px;
+                }
+                .content form .input-group span input:checked+label.checkbox{
+                    background: url("../i/check-box.png") no-repeat 0 -20px;
+                }
+                .content form .input-group span label.day-select{
+                    width: 133px;
+                    margin: 0 8px;
+                }
+                .content form .input-group span label.hour-select{
+                    width: 56px;
+                    margin: 0 5px;
+                }
+                .content form .input-group span label.am-pm-select{
+                    width: 56px;
+                    margin: 0 1px;
+                }
+                    .content form .input-group span label .sbHolder{
+                        position: relative;
+                        top: 13px;
+                    }
+                .content form .input-group span input.hideCheckbox{
+                    position: absolute;
+                    opacity: 0;
+                    cursor: pointer;
+                }
+            .content form .input-group input[type=text],
+            .content form .input-group input[type=password]{
+                background-color: transparent;
+                border: 1px solid #979797;
+                height: 33px;
+                line-height: 31px;
+                margin-bottom: 3px;
+                color: #333;
+                font-weight: 400;
+                font-size: 14px;
+            }
+
+    .content form .col-lg-offset-5{
+        margin-left: 490px;
+        position: relative;
+    }
+        .content form .btn{
+            display: block;
+            margin-bottom: 17px;
+            height: 38px;
+            width: 118px;
+            line-height: 27px;
+            font-size: 14px;
+            background: #d8d8d8;
+        }
+        .content form #logo{
+            float: right;
+            width: 120px;
+            height: 120px;
+        }
+        .content form .btn:hover,
+        .content form .btn.testCon:hover{
+            background: #cac8c8;
+        }
+        .content form input[type=file]{
+            opacity: 0;
+            position: absolute;
+            height: 38px;
+            width: 118px;
+            top: 73px;
+            left: 0;
+            cursor: pointer;
+        }
+        .content form input[type=file]::-ms-browse {
+            width: 118px;
+            background: #ccc;
+        }
+        .content form input[type=file]:hover+.btn{
+            background: #cac8c8;
+        }
+        .content form .btn.testCon{
+            display: inline-block;
+            width: 234px;
+            margin: 28px 12px 0 0;
+            background: #e9e9e9;
+        }
+        .content form .btn.update{
+            display: inline-block;
+            width: 86px;
+            margin-top: 28px;
+            margin-bottom: 0;
+        }
+        .content .filter .hostFile{
+            opacity: 0;
+            position: relative;
+            float: left;
+            height: 38px;
+            width: 90px;
+            margin-right: -100px;
+        }
+
+/*table style*/
+.table > thead > tr > th{
+    border-bottom: 1px solid #e4e4e4;
+    padding: 0 10px 0 18px;
+    height: 44px;
+    color: #fff;
+    line-height: 18px;
+    vertical-align: middle;
+    background: #575757;
+}
+.table > tbody > tr > td{
+    border-bottom: 1px solid #e4e4e4;
+    padding: 0 0 0 18px;
+    height: 49px;
+    color: #333333;
+    line-height: 18px;
+    vertical-align: middle;
+    background: #fbfbfb;
+}
+.table > tbody > tr > td:first-child{
+    border-left: 1px solid #e4e4e4;
+}
+.table.hostTable > tbody > tr > td:first-child{
+    width: 280px;
+}
+.table > tbody > tr > td:last-child{
+    border-right: 1px solid #e4e4e4;
+}
+.table-striped > tbody > tr:nth-child(2n) > td{
+    background: #f2f2f2;
+}
+    .table-striped > tbody > tr > td a.btn{
+        height: 32px;
+        width: 76px;
+        font-size: 13px;
+        line-height: 32px;
+        padding: 0;
+        text-transform: uppercase;
+        background: #dcdcdc;
+    }
+    .table-striped > tbody > tr > td a.btn:hover{
+        background: #d0d0d0;
+    }
+    .table-striped > tbody > tr > td span.state {
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        background: url("../i/state.png") no-repeat;
+        position: relative;
+        top: 5px;
+    }
+    .table-striped > tbody > tr > td span.state.false {
+        background-position: 0 -20px;
+    }
+
+    .table-striped > tbody > tr > td a.delete {
+        width: 33px;
+        height: 32px;
+        display: block;
+        background: #dcdcdc url("../i/delete-icon.png") no-repeat 50% 50%;
+        border-radius: 2px;
+    }
+    .table-striped > tbody > tr > td a.delete:hover {
+        background-color: #d0d0d0;
+    }
+
+/*hide table counts*/
+.ng-table-counts{
+    display: none;
+}
+
+/*pagination*/
+.pagination{
+    float: right;
+    margin: 2px 0 0;
+}
+    .pagination > li:first-child{
+        background: url("../i/pagin-sep.png") 100% 50% no-repeat;
+    }
+        .pagination > li a,
+        .pagination > li a:hover,
+        .pagination > li a:focus,
+        .pagination > li.disabled a,
+        .pagination > li.disabled a:hover,
+        .pagination > li.disabled a:active,
+        .pagination > li.disabled a:focus{
+            background: transparent;
+            color: #777;
+            border: none;
+            padding: 0 9px;
+            background: url("../i/pagin-arrow.png") no-repeat;
+            height: 20px;
+            float: none;
+        }
+
+        .pagination > li.disabled a{
+            opacity: .5;
+        }
+        .pagination > li a:hover{
+            text-decoration: underline;
+        }
+        .pagination > li.disabled a,
+        .pagination > li.disabled a:hover{
+            cursor: default;
+            text-decoration: none;
+        }
+        .pagination > li:first-child a,
+        .pagination > li:first-child a:hover,
+        .pagination > li:first-child a:focus{
+            padding-left: 16px;
+            background-position: 0 -2px;
+        }
+        .pagination > li:last-child a,
+        .pagination > li:last-child a:hover,
+        .pagination > li:last-child a:focus{
+            padding-right: 16px;
+            background-position: 100% -22px;
+        }
+
+/*count*/
+.count{
+    color: #777;
+    font-size: 15px;
+    padding-top: 3px;
+    padding-bottom: 20px;
+}
+
+/*docusign signing iframe*/
+iframe {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    position: absolute;
+    z-index: 1;
+}
+
+.ajax-loading {
+    margin-left: 20px;
+    margin-right: 20px;
+    position: absolute;
+    z-index: 100;
+}
+
+.ajax-loading img {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    margin-top: -33px;
+    margin-left: -33px;
+}
+
+.alert {
+    margin: 15px;
+}
+
+.alertMsg {
+    color: #a94442;
+}
+
+.tpl-hide {
+    display: none;
+}
+

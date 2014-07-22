@@ -1,0 +1,78 @@
+<!--header-->
+<header class="adminHeader logHistory">
+    <h1>Visit Reason</h1>
+</header>
+
+<!--content-->
+<div class="content">
+    <div class="backAndFilter">
+        <a href="javascript:" data-ng-click="backToDashboard()">Back to Dashboard</a>
+
+        <div class="filter">
+            <!-- button-->
+            <a href="javascript:" class="btn grayBtn" data-ng-click="addNewReason()">ADD NEW REASON</a>
+            <!--pagination-->
+            <div class="pagination">
+                <span class="view">View</span>
+                <select class="styled" data-ng-model="selection" data-ng-options="option for option in options" data-ng-change="changeCount(selection)"></select>
+            </div>
+
+            <!--search input-->
+            <div class="searchCnt">
+                <input data-ng-model="$parent.search" type="text" class="search" />
+                <a class="icon" href="javascript:"></a>
+            </div>
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!--form-->
+    <div class="table-responsive">
+        <table data-ng-table="tableParams" class="table table-striped">
+            <tr data-ng-repeat="d in $data">
+                <td data-title="'#'">
+                    {{d.id}}
+                </td>
+                <td data-title="'Reason'" data-ng-click="d.reasonEdit=true">
+                    <span data-ng-if="!d.reasonEdit">{{d.reason}}</span>
+                    <div data-ng-if="d.reasonEdit">
+                        <input class="form-control" type="text" data-ng-model="d.reason" data-ng-blur="d.reasonEdit=false; updateReason(d, 'reason')" data-auto-focus/>
+                    </div>
+                </td>
+                <td data-title="'Show Company Page'" data-ng-click="d.showCompanyEdit=true">
+                    <span data-ng-if="!d.showCompanyEdit" class="state {{d.show_company?'true':'false'}}"></span>
+                    <div data-ng-if="d.showCompanyEdit">
+                        <input class="form-control" type="number" data-ng-model="d.show_company" data-ng-blur="d.showCompanyEdit=false; updateReason(d, 'show_company')" />
+                    </div>
+                </td>
+
+                <td data-title="'Template Id'" width="30%"  data-ng-click="d.templateEdit=true">
+                    <span data-ng-show="!d.templateEdit">{{d.template_guid}}</span>
+                    <div data-ng-show="d.templateEdit">
+                       <select class="form-control" data-ng-model="d.template_guid" data-ng-blur="d.templateEdit=false" data-ng-change="templateSelected(d, d.template_guid)" ng-options="tpl.templateId as tpl.name for tpl in d.templates">
+                        </select>
+                    </div>
+                </td>
+
+                <td data-title="'Show Host Page'" data-ng-click="d.showHostEdit=true">
+                    <span data-ng-if="!d.showHostEdit" class="state {{d.show_host?'true':'false'}}"></span>
+                    <div data-ng-if="d.showHostEdit">
+                        <input class="form-control" type="number" data-ng-model="d.show_host" data-ng-blur="d.showHostEdit=false; udpateReason(d, 'show_host')" />
+                    </div>
+                </td>
+                <td data-title="'Show Badge Page'" data-ng-click="d.showBadgeEdit=true">
+                    <span data-ng-if="!d.showBadgeEdit" class="state {{d.show_badge?'true':'false'}}"></span>
+                    <div data-ng-if="d.showBadgeEdit">
+                        <input class="form-control" type="number" data-ng-model="d.show_badge" data-ng-blur="d.showBadgeEdit=false; updateReason(d, 'show_badge')" />
+                    </div>
+                </td>
+                <td data-title="'Delete'">
+                    <a href="javascript:" data-ng-click="deleteReason(d)" class="delete"></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="count">
+        Showing {{(tableParams.$params.count*tableParams.$params.page>visitReasons.length)?(visitReasons.length-(tableParams.$params.count*(tableParams.$params.page-1))):tableParams.$params.count}} of {{visitReasons.length}} entries
+    </div>
+</div>

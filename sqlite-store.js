@@ -15,7 +15,8 @@
  * PARTICULAR PURPOSE.
  */
 
-var Store = require('express/node_modules/connect/lib/middleware/session/store');
+
+var Store = require('express-session/session/store');
 var db = require('./database.js');
 
 /**

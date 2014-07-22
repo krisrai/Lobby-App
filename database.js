@@ -31,6 +31,11 @@ exports.Host = persist.define('Host',
   , 'name': type.STRING
 });
 
+exports.Signature = persist.define('Signature',
+  { 'email': {'type': type.STRING, 'primaryKey': true}
+  , 'envelope_id': type.STRING
+  });
+
 exports.Person = persist.define('Person',
   { 'first_name': type.STRING
   , 'last_name': type.STRING
@@ -53,6 +58,7 @@ exports.Setting = persist.define('Setting',
   , 'ds_account_name': type.STRING
   , 'ds_account_password': type.STRING
   , 'ds_account_key': type.STRING
+  , 'ds_skip_signing': type.BOOLEAN
   , 'auto_signout_time': type.STRING
   , 'auto_signout_enabled': type.BOOLEAN
   , 'report_day_time': type.STRING

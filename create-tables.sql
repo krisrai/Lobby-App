@@ -20,6 +20,11 @@ CREATE TABLE hosts
   , name TEXT NOT NULL
 );
 
+CREATE TABLE signatures
+  ( email TEXT PRIMARY KEY
+  , envelope_id TEXT NOT NULL
+);
+
 CREATE TABLE people
   ( id INTEGER PRIMARY KEY ASC
   , first_name TEXT NOT NULL
@@ -44,6 +49,7 @@ CREATE TABLE settings
   , ds_account_name TEXT NOT NULL
   , ds_account_password TEXT NOT NULL
   , ds_account_key TEXT NOT NULL
+  , ds_skip_signing BOOLEAN DEFAULT false
   , auto_signout_time TEXT
   , auto_signout_enabled BOOLEAN DEFAULT false
   , report_day_time TEXT

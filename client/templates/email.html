@@ -1,0 +1,22 @@
+<!--form-->
+<form name="emailForm" class="{{!validForm?'invalid':''}}" data-ng-submit="setEmail(email)">
+    <div class="row">
+        <div class="col-sm-12">
+            <label>Email Address</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <input type="email" name="email" data-ng-change="checkEmail()" class="{{(!validEmail||email==='')?'empty':''}}" data-ng-model="email" placeholder="email@domain.com" auto-focus/>
+        </div>
+    </div>
+
+    <div class="row btnRow">
+        <div class="col-sm-6">
+            <a href="javascript:" data-ng-click="stepBack()" class="btn grayBtn">BACK</a>
+        </div>
+        <div class="col-sm-6">
+            <button type="submit" class="btn yellowBtn">NEXT</button>
+        </div>
+    </div>
+</form>

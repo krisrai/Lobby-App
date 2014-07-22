@@ -1,0 +1,19 @@
+<!--message-->
+<div class="reason-for-visit">
+    <h1>Reason for Visiting</h1>
+</div>
+<!--form-->
+<form name="reason" data-ng-submit="setSelectedReason(selectedReason)">
+    <div class="row" data-ng-repeat="reason in visitReasons">
+        <div class="col-sm-12">
+            <label class="radio {{reason.select ?'select':''}}" data-ng-click="reasonSelected(reason)">
+                {{reason.reason}}
+            </label>
+        </div>
+    </div>
+    <div class="row btnRow">
+        <div class="col-sm-6 col-sm-offset-6">
+            <button type="submit" class="btn yellowBtn" data-ng-disabled="!selectedReason.reason">Next</button>
+        </div>
+    </div>
+</form>

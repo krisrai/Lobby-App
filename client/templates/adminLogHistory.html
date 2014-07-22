@@ -1,0 +1,68 @@
+<!--header-->
+<header class="adminHeader logHistory">
+    <h1>Log History</h1>
+</header>
+
+<!--content-->
+<div class="content">
+    <div class="backAndFilter">
+        <a href="javascript:" data-ng-click="backToDashboard()">Back to Dashboard</a>
+        <div class="filter">
+            <!--pagination-->
+            <div class="pagination">
+                <span class="view">View</span>
+                <select class="styled" data-ng-model="selection" data-ng-options="option for option in options" data-ng-change="changeCount(selection)">
+                </select>
+            </div>
+            <!--filter button-->
+            <a href="javascript:" class="filterBtn"></a>
+            <!--search input-->
+            <div class="searchCnt">
+                <input data-ng-model="$parent.search" type="text" class="search"/>
+                <a class="icon" href="javascript:"></a>
+            </div>
+        </div>
+    </div>
+
+    <!--form-->
+    <div class="table-responsive">
+        <table data-ng-table="tableParams" class="table table-striped">
+            <tr data-ng-repeat="user in $data">
+                <td data-title="'#'">
+                    {{user.id}}
+                </td>
+                <td data-title="'Name'">
+                    {{user.name}}
+                </td>
+                <td data-title="'Reason For Visit'">
+                    {{user.visitReason}}
+                </td>
+                <td data-title="'Email'">
+                    {{user.email}}
+                </td>
+                <td data-title="'Company Name'">
+                    {{user.companyName}}
+                </td>
+                <td data-title="'Job Title'">
+                    {{user.jobTitle}}
+                </td>
+                <td data-title="'Host'">
+                    {{user.host}}
+                </td>
+                <td data-title="'Badge Number'">
+                    {{user.badgeNumber}}
+                </td>
+                <td data-title="'Sign In Time'">
+                    {{user.signInTime}}
+                </td>
+                <td data-title="'Sign Out'">
+                    <a data-ng-if="!user.signOutTime" data-ng-click="signOut(user)" class="btn grayBtn">Sign Out</a>
+                    {{user.signOutTime}}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="count">
+        Showing {{(tableParams.$params.count*tableParams.$params.page>logHistory.length)?(logHistory.length-(tableParams.$params.count*(tableParams.$params.page-1))):tableParams.$params.count}} of {{logHistory.length}} entries
+    </div>
+</div>

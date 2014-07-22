@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="App">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>DocuSign - HTML5 iPad UI Prototype Challenge</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/jquery.selectbox.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.selectbox-0.2.1.js"></script>
+    <script src="js/angular.min.js"></script>
+
+    <script src="js/ng-table.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <!-- For hashing the password -->
+    <script src='js/sha256.js'></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/directives.js"></script>
+</head>
+
+<body class="admin {{!footer?'noFooter':''}}" data-ng-controller="adminCtrl">
+<!--main container-->
+<div class="container-fluid">
+    <!--dynamic view-->
+    <div data-ng-view class="view"></div>
+</div>
+
+<!--footer-->
+<footer id="footer" data-ng-if="footer"></footer>
+
+</body>
+</html>

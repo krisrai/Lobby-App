@@ -7,3 +7,4 @@ config.json
 default_integrator_key.js
 .idea
 projectFilesBackup
+.DS_Store

@@ -21,12 +21,12 @@ var db = new (require('sqlite3')).Database('lobby.db');
 
 db.exec(fs.readFileSync('create-tables.sql', 'utf-8'));
 
-var stmt = db.prepare('INSERT INTO settings VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-stmt.run(60, 'ba01338ba5fa0c1584a6d41f93fe550b1d715a8de2da10d6c673131a85658394', 'ACME LLC', 'Springsfield', 'demo', 'lobby.app@gmail.com', 'LobbyApp1', '', '', false, '', 7, '');
+var stmt = db.prepare('INSERT INTO settings VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+stmt.run(60, 'ba01338ba5fa0c1584a6d41f93fe550b1d715a8de2da10d6c673131a85658394', 'ACME LLC', 'Springsfield', 'Demo', 'lobby.app@gmail.com', 'LobbyApp1', '', false, '', false, '', 7, '');
 stmt.finalize();
 
 oldFile = fs.createReadStream('default_logo.png');
-newFile = fs.createWriteStream('public/images/logo.png');     
+newFile = fs.createWriteStream('client/i/logo.png');     
 oldFile.pipe(newFile);
 
 var stmt = db.prepare('INSERT INTO reasons VALUES (?, ?, ?, ?, ?, ?, ?)');

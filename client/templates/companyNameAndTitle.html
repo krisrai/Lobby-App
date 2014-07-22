@@ -1,0 +1,31 @@
+<!--form-->
+<form name="nameAndTitle" class="{{!validForm?'invalid':''}}" data-ng-submit="setCompanyNameAndTitle(companyName,jobTitle)">
+    <div class="row">
+        <div class="col-sm-12">
+            <label>Company Name</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <input class="{{companyName===''?'empty':''}}" type="text" data-ng-model="companyName" placeholder="Company Name" auto-focus/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <label>Job Title</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <input class="{{jobTitle===''?'empty':''}}" type="text" data-ng-model="jobTitle" placeholder="Job Title"/>
+        </div>
+    </div>
+    <div class="row btnRow">
+        <div class="col-sm-6">
+            <a href="javascript:" data-ng-click="stepBack()" class="btn grayBtn">BACK</a>
+        </div>
+        <div class="col-sm-6">
+            <button type="submit" class="btn yellowBtn">NEXT</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,17 @@
+<!--welcome message-->
+<div class="welcome-message">
+    <h1 class="greeting">Hi, {{visitorName}}!</h1>
+    <div class="sign-in-msg">
+        <span>You signed in at {{signinTime | date:'h:mma'}} on {{signinTime | date:'dd/MM/yy'}}</span>
+        <span>Would you like to sign out?</span>
+    </div>
+</div>
+<!--form-->
+<form name="welcomeForm">
+    <div class="row btnRow">
+        <div class="col-sm-12">
+            <a href="javascript:" data-ng-click="reSignIn()" class="btn yellowBtn">SIGN IN</a>
+            <a href="javascript:" data-ng-click="signOut()" class="btn grayBtn">SIGN OUT</a>
+        </div>
+    </div>
+</form>

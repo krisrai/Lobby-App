@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="App">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>DocuSign - HTML5 iPad UI Prototype Challenge</title>
+
+    <!-- jQuery UI for autocomplete -->
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- jQuery UI for autocomplete -->
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/angular.min.js"></script>
+
+    <script src="js/ng-table.js"></script>
+    <script src="js/angular-route.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/directives.js"></script>
+</head>
+
+<body data-ng-controller="visitorsCtrl">
+<!--main container-->
+<div class="container-fluid">
+    <!--logo-->
+    <header class="logo-login"><img class="logo" src="i/logo.png"/></header>
+    <!-- display alert message -->
+    <div class="row" data-ng-show="alert">
+        <div class="col-sm-offset-2 col-sm-8">
+            <p class="alertMsg">{{alert}}</p>
+        </div>
+    </div>
+    <!--dynamic view-->
+    <div data-ng-view class="view"></div>
+
+</div>
+
+<!--footer-->
+<div id="footer">
+</div>
+
+</body>
+</html>

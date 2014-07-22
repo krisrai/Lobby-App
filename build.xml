@@ -94,7 +94,7 @@
   <target name="dist">
     <zip destfile="${basedir}/build/package.zip"
          basedir="${basedir}"
-         excludes="build/**, node_modules/**, **/*.swp, **/*.db, .gitignore, .git/**, public/images/logo.png, **/*.template, **/*.properties"
+         excludes="build/**, node_modules/**, **/*.swp, **/*.db, .gitignore, .git/**, **/*.template, **/*.properties"
     />
   </target>
   <target name="build" depends="database,dist" />

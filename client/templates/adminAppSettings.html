@@ -1,0 +1,167 @@
+<!--header-->
+<header class="adminHeader">
+    <h1>Application Settings</h1>
+</header>
+
+<!--content-->
+<div class="content">
+    <div class="backAndFilter">
+        <a href="javascript:" data-ng-click="backToDashboard()">Back to Dashboard</a>
+    </div>
+    <!--form-->
+    <form class="appSettings" name="settingForm">
+        <!--field set-->
+        <fieldset>
+        <legend class="section-title">General</legend>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <label>Company Name</label>
+                        <input type="text" name="company_name" data-ng-model="settings.company_name"/>
+                    </div>
+                    <div class="input-group">
+                        <label>Company Location</label>
+                        <input type="text" name="company_location" data-ng-model="settings.company_location"/>
+                    </div>
+                    <div class="input-group">
+                        <a href="javascript:" class="btn grayBtn update" data-ng-click="updateGeneral()">UPDATE</a>
+                    </div>
+                </div>
+                <div class="col-lg-offset-5">
+                    <div class="input-group">
+                        <img id="logo" src="i/transparent-img.png" alt="x"/>
+                        <label>Company Logo</label>
+                        <span>{{logoMsg}}</span>
+                        <input id="logoSelect" type="file" name="logo" data-ng-model="logo" onchange="angular.element(this).scope().showImage(this)" accept="image/*"/>
+                        <a href="javascript:" class="btn grayBtn">UPLOAD FILE</a>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <!--field set-->
+        <fieldset>
+            <legend class="section-title">Auto Sign Out</legend>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group fluid">
+                        <span>Idle time period for user flow is <label><input data-max="60" name="user_timeout" data-valid-Number type="text" maxlength="2" data-ng-model="settings.user_timeout"/></label> seconds</span>
+                        <span class="sign-out">
+                            <input id="signOut" type="checkbox" class="hideCheckbox" name="auto_signout_enabled" data-ng-model="settings.auto_signout_enabled">
+                            <label for="signOut" class="checkbox"></label>
+                            Sign all visitors out at
+                            <label><input maxlength="2" data-max="23" data-valid-Number name="signout_hour" data-ng-model="signout_hour" data-ng-disabled="!settings.auto_signout_enabled" type="text" value=""/></label>
+                            hours and
+                            <label><input maxlength="2" data-max="59" data-valid-Number name="signout_minutes" data-ng-model="signout_minutes" data-ng-disabled="!settings.auto_signout_enabled" type="text" value=""/></label>minutes</span>
+                    </div>
+                    <div class="input-group">
+                        <a href="javascript:" class="btn grayBtn update" data-ng-click="updateAutoSignOut()">UPDATE</a>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <!--field set-->
+        <fieldset>
+            <legend class="section-title">Reports</legend>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group fluid">
+                        <span class="custom-select-holder">Send reports on
+                            <label class="day-select">
+                                <select class="styled" name="report_week" data-ng-model="report_week" data-ng-options="day for day in weekDays"></select>
+                            </label> at
+                            <label class="hour-select">
+                                <select class="styled" name="report_hour" data-ng-model="report_hour" data-ng-options="hour for hour in hours"></select>
+                            </label>
+                            <label class="am-pm-select">
+                                <select class="styled" name="report_ampm" data-ng-model="report_ampm" data-ng-options="ap for ap in amPm"></select>
+
+                            </label>
+                        </span>
+                        <div class="input-group">
+                            <label><span>Email list to send report (separated by comma)</span></label>
+                            <input type="text" name="report_emails" data-ng-model="settings.report_emails"/>
+                        </div>
+                        <span class="day-select-holder">Number of past days to send report
+                            <label class="hour-select">
+                                <select class="styled" name="report_num_days" data-ng-model="settings.report_num_days" data-ng-options="day for day in days"></select>
+                            </label>
+                        </span>
+                    </div>
+                    <div class="input-group">
+                        <a href="javascript:" class="btn grayBtn update" data-ng-click="updateReport()">UPDATE</a>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <!--field set-->
+        <fieldset>
+            <legend class="section-title">DocuSign Environment</legend>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group environment">
+                        <label>Environment</label>
+                        <select class="styled" name="ds_env" data-ng-model="settings.ds_env" data-ng-options="env for env in environment">
+                        <!-- <option value="0">&nbsp;</option>
+                            <option value="1">Production</option>
+                            <option value="2">Demo</option> -->
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Account Name</label>
+                        <input type="text" name="ds_account_name" data-ng-model="settings.ds_account_name"/>
+                    </div>
+                    <div class="input-group">
+                        <label>Account Password</label>
+                        <input type="password" name="ds_account_password" data-ng-model="settings.ds_account_password"/>
+                    </div>
+                    <div class="input-group">
+                        <label>Integrator Key</label>
+                        <input type="password" name="ds_account_key" data-ng-model="settings.ds_account_key"/>
+                    </div>
+                    
+                    <div class="input-group">
+                        <span>
+                            <label>Skip Signing</label>
+                            <input id="skipSigning" type="checkbox" class="hideCheckbox" name="ds_skip_signing" data-ng-model="settings.ds_skip_signing"/>
+                            <label for="skipSigning" class="checkbox"></label>
+                        </span>
+                    </div>
+                    <div class="input-group">
+                        <a href="javascript:" class="btn grayBtn testCon" data-ng-click="testDocuSignConnection()">TEST DOCUSIGN CONNECTION</a>
+                        <a href="javascript:" data-ng-show="dsTest && dsTest.pass"><img width="16px" height="16px" style="margin:10px 20px 0px 0px" src="i/200px-green_checkmark.png"/></a>
+                        <a href="javascript:" data-ng-show="dsTest && !dsTest.pass"><img width="16px" height="16px" style="margin:10px 20px 0px 0px" src="i/200px-red_x.png"/></a>
+                        <a href="javascript:" class="btn grayBtn update" data-ng-click="updateDocuSign()">UPDATE</a>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <!--field set-->
+        <fieldset>
+            <legend class="section-title">Admin Password</legend>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group environment">
+                        <label>Current Password</label>
+                        <input type="password" name="current_password" data-ng-model="current_password"/>
+                        <p class="alertMsg" data-ng-show="currentError">{{currentError}}</p>
+                    </div>
+                    <div class="input-group environment">
+                        <label>New Password</label>
+                        <input type="password" name="new_password" data-ng-model="new_password"/>
+                        <p class="alertMsg" data-ng-show="newError">{{newError}}</p>
+                    </div>
+                    <div class="input-group environment">
+                        <label>Confirm New Password</label>
+                        <input type="password" name="confirm_password" data-ng-model="confirm_password"/>
+                        <p class="alertMsg" data-ng-show="confirmError">{{confirmError}}</p>
+                    </div>
+                    <div class="input-group">
+                        <a href="javascript:" class="btn grayBtn update" data-ng-click="updateAdminPassword()">UPDATE</a>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

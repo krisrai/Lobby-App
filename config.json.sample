@@ -24,7 +24,7 @@
   
   "MAIL": {
     "transport": "SMTP",
-    "from_email": "peaklinuxer@gmail.com",
+    "from_email": "lobby.app@gmail.com",
     "SMTP" : {
       "service": "Gmail",
       "user": "your-email@gmail.com",
