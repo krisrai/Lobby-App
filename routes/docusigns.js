@@ -34,7 +34,7 @@ var print = require('../print');
 
 
 router.post('/docusign_test', function(req, res) {
-  var env = req.param('ds_env');
+  var env = (req.param('ds_env') === 'Production') ? 'www' : 'demo';
   var name = req.param('ds_account_name');
   var password = req.param('ds_account_password');
   var key = req.param('ds_account_key');
@@ -175,11 +175,13 @@ router.get('/dsrest_create_envelope', function(req, res) {
 
   print._('request: ' + url + '\n  ' + JSON.stringify(data));
   request.post(options, function(error, response, body) {
-    print._('response: ' + '\n  ' + body);
+    print._('response: ' + '\n  ');
+    print._(body);
 
-    if ('uri' in body)
+    if ('uri' in body) {
       req.session.user.view_url = req.session.user.base_url +
                                   body.uri + '/views/recipient';
+    }
 
     // save envelopeId to session
     if ('envelopeId' in body) {
