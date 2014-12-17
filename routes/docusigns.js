@@ -156,6 +156,10 @@ router.get('/dsrest_create_envelope', function(req, res) {
   var headers = req.session.user.rest_headers.headers;
   var template_id = req.session.user.template_guid;
 
+  if (template_id == null) {
+    template_id = '769BBD31-C577-4555-A008-AFDD6E7BC64B';
+  }
+
   var data = {
     templateId: template_id,
     templateRoles: [{
