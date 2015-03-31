@@ -120,6 +120,12 @@ app.get('/admin_reasons', routes.admin_reasons);
 app.get('/admin_hosts', routes.admin_hosts);
 
 app.post('/admin_reasons_edit', function(req, res) {
+  if (!req.session.is_admin) {
+    console.log('Alert:Unauthorized admin reasons edit request from req.connection.remoteAddress: %s, req.headers[\'x-forwarded-for\']: %s', req.connection.remoteAddress, req.headers['x-forwarded-for']);
+    res.status(401).send('Not authorized');
+    return;
+  }
+
   if (req.param('add')) {
     var new_reason = new db.Reason();
     new_reason.save(db.connection, function() {});
@@ -148,6 +154,12 @@ app.post('/admin_reasons_edit', function(req, res) {
 });
 
 app.post('/admin_manual_signout', function(req, res) {
+  if (!req.session.is_admin) {
+    console.log('Alert:Unauthorized admin manual signout request from req.connection.remoteAddress: %s, req.headers[\'x-forwarded-for\']: %s', req.connection.remoteAddress, req.headers['x-forwarded-for']);
+    res.status(401).send('Not authorized');
+    return;
+  }
+
   db.Person.all(db.connection, function(err, people) {
     if (err) throw err;
 
@@ -163,6 +175,12 @@ app.post('/admin_manual_signout', function(req, res) {
 });
 
 app.post('/admin_update_name', function(req, res) {
+  if (!req.session.is_admin) {
+    console.log('Alert:Unauthorized admin name update request from req.connection.remoteAddress: %s, req.headers[\'x-forwarded-for\']: %s', req.connection.remoteAddress, req.headers['x-forwarded-for']);
+    res.status(401).send('Not authorized');
+    return;
+  }
+
   db.Setting.first(db.connection, function(err, setting) {
     if (err) throw err;
 
@@ -174,6 +192,12 @@ app.post('/admin_update_name', function(req, res) {
 });
 
 app.post('/admin_update_location', function(req, res) {
+  if (!req.session.is_admin) {
+    console.log('Alert:Unauthorized admin location update request from req.connection.remoteAddress: %s, req.headers[\'x-forwarded-for\']: %s', req.connection.remoteAddress, req.headers['x-forwarded-for']);
+    res.status(401).send('Not authorized');
+    return;
+  }
+
   db.Setting.first(db.connection, function(err, setting) {
     if (err) throw err;
 
@@ -185,6 +209,12 @@ app.post('/admin_update_location', function(req, res) {
 });
 
 app.post('/admin_update_logo', function(req, res) {
+  if (!req.session.is_admin) {
+    console.log('Alert:Unauthorized admin logo update request from req.connection.remoteAddress: %s, req.headers[\'x-forwarded-for\']: %s', req.connection.remoteAddress, req.headers['x-forwarded-for']);
+    res.status(401).send('Not authorized');
+    return;
+  }
+
   var path = 'public/images/logo.png';
   fs.unlinkSync(path); // remove old logo
 
@@ -198,6 +228,12 @@ app.post('/admin_update_logo', function(req, res) {
 });
 
 app.post('/admin_update_hosts', function(req, res) {
+  if (!req.session.is_admin) {
+    console.log('Alert:Unauthorized admin hosts update request from req.connection.remoteAddress: %s, req.headers[\'x-forwarded-for\']: %s', req.connection.remoteAddress, req.headers['x-forwarded-for']);
+    res.status(401).send('Not authorized');
+    return;
+  }
+
   var hosts = '';
 
   // import modules
@@ -226,6 +262,12 @@ app.post('/admin_update_hosts', function(req, res) {
 });
 
 app.post('/admin_update_env', function(req, res) {
+  if (!req.session.is_admin) {
+    console.log('Alert:Unauthorized admin env update request from req.connection.remoteAddress: %s, req.headers[\'x-forwarded-for\']: %s', req.connection.remoteAddress, req.headers['x-forwarded-for']);
+    res.status(401).send('Not authorized');
+    return;
+  }
+
   db.Setting.first(db.connection, function(err, setting) {
     if (err) throw err;
 
@@ -237,6 +279,12 @@ app.post('/admin_update_env', function(req, res) {
 });
 
 app.post('/admin_update_admin_password', function(req, res) {
+  if (!req.session.is_admin) {
+    console.log('Alert:Unauthorized admin password update request from req.connection.remoteAddress: %s, req.headers[\'x-forwarded-for\']: %s', req.connection.remoteAddress, req.headers['x-forwarded-for']);
+    res.status(401).send('Not authorized');
+    return;
+  }
+
   db.Setting.first(db.connection, function(err, setting) {
     if (err) throw err;
 
@@ -248,6 +296,12 @@ app.post('/admin_update_admin_password', function(req, res) {
 });
 
 app.post('/docusign_test', function(req, res) {
+  if (!req.session.is_admin) {
+    console.log('Alert:Unauthorized docusign test request from req.connection.remoteAddress: %s, req.headers[\'x-forwarded-for\']: %s', req.connection.remoteAddress, req.headers['x-forwarded-for']);
+    res.status(401).send('Not authorized');
+    return;
+  }
+
   var env = req.param('env');
   var name = req.param('name');
   var password = req.param('password');
