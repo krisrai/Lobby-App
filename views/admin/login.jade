@@ -1,18 +1,5 @@
 extends ../layout
 
-block scripts
-  include ../includes/js/jquery
-  include ../includes/js/focus
-
-  include ../includes/js/crypto
-
-  script.
-    $(document).ready(function() {
-      $('#login').submit(function() {
-        $('#password').val(CryptoJS.SHA256($('#password').val()));
-      });
-    });
-
 block content
     include ../includes/logo
 
