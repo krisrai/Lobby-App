@@ -61,7 +61,7 @@ You may need to set an integrator key in the admin panel (more details in the
 http://www.docusign.com/developer-center
 
 To set the integrator key into the app, go into the admin panel (available at
-http://{hostname}/admin) and click on the "Change App Settings" button. There
+https://{hostname}/admin) and click on the "Change App Settings" button. There
 should be a text field where you can put in your integrator key.
 
 The integrator key is required for these functions of the app:
@@ -127,7 +127,7 @@ The app can be executed by using this command:
 $ node app
 ```
 
-Now point your browser to this address: http://localhost:3000
+Now point your browser to this address: https://localhost:3000
 
 
 Browser Settings for Lobby App Usage
@@ -164,7 +164,7 @@ Administrator Access
 ====================
 
 To access the administrator panel for the app, go to this address from your
-browser: http://localhost:3000/admin
+browser: https://localhost:3000/admin
 
 The default password is "CHANGEME". This password may be changed through the
 app interface.

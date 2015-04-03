@@ -9,12 +9,38 @@
 
   <property environment="env" />
 
+  <property name="E_MAIL" value="lobby.app@gmail.com" />
+  <property name="CERTIFICATE_NAME" value="DocuSign Lobby-App" />
+  <property name="COUNTRY" value="US" />
+
   <target name="clean">
     <delete includeemptydirs="true">
       <fileset dir="${basedir}/build" includes="**/*"/>
     </delete>
     <delete dir="${basedir}/node_modules" />
     <delete file="${basedir}/lobby.db" />
+    <delete file="${basedir}/ssl-key.pem" />
+    <delete file="${basedir}/ssl-cert.pem" />
+  </target>
+
+  <target name="generateSslKeyAndCert">
+    <exec executable="openssl" failonerror="true">
+      <arg value="genrsa" />
+      <arg value="-out" />
+      <arg value="ssl-key.pem" />
+      <arg value="2048" />
+    </exec>
+    <exec executable="openssl" failonerror="true">
+      <arg value="req" />
+      <arg value="-x509" />
+      <arg value="-new" />
+      <arg value="-key" />
+      <arg value="ssl-key.pem" />
+      <arg value="-out" />
+      <arg value="ssl-cert.pem" />
+      <arg value="-subj" />
+      <arg value="/emailAddress=${E_MAIL}, CN=${CERTIFICATE_NAME}, C=${COUNTRY}" />
+    </exec>
   </target>
 
   <target name="dep">
@@ -52,6 +78,7 @@
     <fail if="do.abort">Build aborted by user.</fail>
     <antcall target="dep" />
     <antcall target="database" />
+    <antcall target="generateSslKeyAndCert" />
   </target>
   <target name="daemon">
     <copy file="lobby.conf" todir="/etc/init" overwrite="true">
