@@ -391,13 +391,18 @@ app.get('/dsrest_init', function(req, res) {
 
     print._('request: ' + url + '\n  ' + JSON.stringify(headers));
     request.get(options, function(error, response, body) {
-      var json = JSON.parse(body);
-      print._('response: ' + '\n  ' + JSON.stringify(json));
+      try {
+        var json = JSON.parse(body);
+        print._('response: ' + '\n  ' + JSON.stringify(json));
 
-      if ('loginAccounts' in json)
-        req.session.user.base_url = json.loginAccounts[0].baseUrl;
+        if ('loginAccounts' in json)
+          req.session.user.base_url = json.loginAccounts[0].baseUrl;
 
-      res.send('errorCode' in json);
+        res.send('errorCode' in json);
+      } catch(err) {
+        console.log(err.stack);
+        res.send({"errorCode":500,"message":"Internal server error"});
+      }
     });
   });
 });
