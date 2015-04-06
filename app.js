@@ -22,7 +22,7 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , http = require('http')
+  , https = require('https')
   , path = require('path');
 
 var fs = require('fs');
@@ -532,7 +532,12 @@ app.get('/dsrest_send_notification', function(req, res) {
   });
 });
 
-http.createServer(app).listen(app.get('port'), function(){
+var options = {
+  key: fs.readFileSync('ssl-key.pem'),
+  cert: fs.readFileSync('ssl-cert.pem'),
+};
+
+https.createServer(options, app).listen(app.get('port'), function(){
   print._("Express server listening on port " + app.get('port'));
 });
 
