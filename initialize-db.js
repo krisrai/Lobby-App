@@ -17,12 +17,16 @@
 
 var fs = require('fs');
 var db = new (require('sqlite3')).Database('lobby.db');
-
+var nconf = require('nconf').file('config.json');
+var crypto = require('crypto');
 
 db.exec(fs.readFileSync('create-tables.sql', 'utf-8'));
 
+var defaultPassword = nconf.get('defaultAdminPassword');
+var passwordSalt = new Buffer(nconf.get('adminPasswordSalt'), 'base64');
+var pbkdf2Password = crypto.pbkdf2Sync(defaultPassword, passwordSalt, 100000, 512).toString('hex');
 var stmt = db.prepare('INSERT INTO settings VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?)');
-stmt.run(60, 'ba01338ba5fa0c1584a6d41f93fe550b1d715a8de2da10d6c673131a85658394', 'ACME LLC', 'Springsfield', 'demo', 'lobby.app@gmail.com', 'LobbyApp1', '');
+stmt.run(60, pbkdf2Password, 'ACME LLC', 'Springsfield', 'demo', 'lobby.app@gmail.com', 'LobbyApp1', '');
 stmt.finalize();
 
 oldFile = fs.createReadStream('default_logo.png');

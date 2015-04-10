@@ -19,6 +19,11 @@
 // run this if the admin password needs to be reset
 
 var db = new (require('sqlite3')).Database('lobby.db');
+var nconf = require('nconf').file('config.json');
+var crypto = require('crypto');
 
-db.run("UPDATE settings SET admin_password = 'fcf730b6d95236ecd3c9fc2d92d7b6b2bb061514961aec041d6c7a7192f592e4' WHERE id = 1");
+var defaultPassword = nconf.get('defaultAdminPassword');
+var passwordSalt = new Buffer(nconf.get('adminPasswordSalt'), 'base64');
+var pbkdf2Password = crypto.pbkdf2Sync(defaultPassword, passwordSalt, 100000, 512).toString('hex');
+db.run("UPDATE settings SET admin_password = '" + pbkdf2Password + "' WHERE id = 1");
 

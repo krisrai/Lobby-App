@@ -36,6 +36,7 @@ var SqliteStore = require('./sqlite-store');
 var db = require('./database');
 var print = require('./print');
 var nconf = require('nconf').file('config.json');
+var crypto = require('crypto');
 
 var app = express();
 
@@ -285,12 +286,20 @@ app.post('/admin_update_admin_password', function(req, res) {
     return;
   }
 
-  db.Setting.first(db.connection, function(err, setting) {
+  var suppliedPassword = req.param('admin_password');
+  var passwordSalt = new Buffer(nconf.get('adminPasswordSalt'), 'base64');
+  crypto.pbkdf2(suppliedPassword, passwordSalt, 100000, 512, function(err, key) {
     if (err) throw err;
 
-    setting.admin_password = req.param('admin_password');
-    setting.save(db.connection, function() {
-      res.send();
+    var pbkdf2Password = key.toString('hex');
+
+    db.Setting.first(db.connection, function(err, setting) {
+      if (err) throw err;
+
+      setting.admin_password = pbkdf2Password;
+      setting.save(db.connection, function() {
+        res.send();
+      });
     });
   });
 });

@@ -18,6 +18,8 @@
 var moment = require('moment');
 var db = require('../database');
 var print = require('../print');
+var crypto = require('crypto');
+var nconf = require('nconf').file('config.json');
 
 var total_pages = 6;
 
@@ -249,19 +251,34 @@ exports.admin_login = function(req, res) {
 };
 
 exports.admin_menu = function(req, res) {
-  db.Setting.first(db.connection, function(err, setting) {
-    if (err) throw err;
-
-    if (setting.admin_password == req.param('password') || req.session.is_admin) {
-      req.session.is_admin = true;
-
-      res.render('admin/menu',
-        { title: 'Admin Menu'
+  if (req.session.is_admin) {
+    res.render('admin/menu',
+      { title: 'Admin Menu'
         , style: 'admin'
       });
-    } else {
-      res.redirect('admin');
-    }
+    return;
+  }
+
+  var suppliedPassword = req.param('password');
+  var unbase64Salt = new Buffer(nconf.get('adminPasswordSalt'), 'base64');
+  crypto.pbkdf2(suppliedPassword, unbase64Salt, 100000, 512, function(err, key) {
+    if (err) throw err;
+
+    var pbkdf2Password = key.toString('hex');
+    db.Setting.first(db.connection, function(err, setting) {
+      if (err) throw err;
+
+      if (setting.admin_password == pbkdf2Password) {
+        req.session.is_admin = true;
+
+        res.render('admin/menu',
+          { title: 'Admin Menu'
+            , style: 'admin'
+          });
+      } else {
+        res.redirect('admin');
+      }
+    });
   });
 };
 

@@ -43,6 +43,16 @@
     </exec>
   </target>
 
+  <target name="generateAdminPasswordSalt">
+    <exec executable="openssl" outputproperty="AdminPasswordSalt" failonerror="true">
+      <arg value="rand" />
+      <arg value="-base64" />
+      <arg value="32" />
+    </exec>
+    <copy file="config.format.json" tofile="config.json" overwrite="true" />
+    <replace file="config.json" token="@@@Admin_Password_Salt@@@" value="${AdminPasswordSalt}" />
+  </target>
+
   <target name="dep">
     <exec executable="npm">
       <arg value="install" />
@@ -77,6 +87,7 @@
     </condition>
     <fail if="do.abort">Build aborted by user.</fail>
     <antcall target="dep" />
+    <antcall target="generateAdminPasswordSalt" />
     <antcall target="database" />
     <antcall target="generateSslKeyAndCert" />
   </target>

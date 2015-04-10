@@ -114,16 +114,15 @@ block scripts
           return false;
         }
 
-        var hash1 = CryptoJS.SHA256($('#admin_password > [type=password]:eq(0)').val()).toString();
-        var hash2 = CryptoJS.SHA256($('#admin_password > [type=password]:eq(1)').val()).toString();
+        var password1 = $('#admin_password > [type=password]:eq(0)').val();
+        var password2 = $('#admin_password > [type=password]:eq(1)').val();
 
-        if (hash1 != hash2) {
+        if (password1 != password2) {
             $('#password_error').text('The passwords you entered do not match.');
             return false;
         }
         $('#password_error').text('');
 
-        $('#admin_password > [type=password]').val(hash1);
         return true;
       });
     });
