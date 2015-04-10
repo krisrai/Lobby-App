@@ -1,0 +1,4 @@
+{
+  "defaultAdminPassword": "CHANGEME",
+  "adminPasswordSalt": "@@@Admin_Password_Salt@@@"
+}

@@ -287,8 +287,8 @@ app.post('/admin_update_admin_password', function(req, res) {
   }
 
   var suppliedPassword = req.param('admin_password');
-  var unbase64Salt = new Buffer('670LUl6Jv1Tc07rj4sAxLxPKSLF76FQrbCNn48Ht2H0=', 'base64').toString('ascii');
-  crypto.pbkdf2(suppliedPassword, unbase64Salt, 100000, 512, function(err, key) {
+  var passwordSalt = new Buffer(nconf.get('adminPasswordSalt'), 'base64');
+  crypto.pbkdf2(suppliedPassword, passwordSalt, 100000, 512, function(err, key) {
     if (err) throw err;
 
     var pbkdf2Password = key.toString('hex');

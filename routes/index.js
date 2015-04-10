@@ -19,6 +19,7 @@ var moment = require('moment');
 var db = require('../database');
 var print = require('../print');
 var crypto = require('crypto');
+var nconf = require('nconf').file('config.json');
 
 var total_pages = 6;
 
@@ -259,7 +260,7 @@ exports.admin_menu = function(req, res) {
   }
 
   var suppliedPassword = req.param('password');
-  var unbase64Salt = new Buffer('670LUl6Jv1Tc07rj4sAxLxPKSLF76FQrbCNn48Ht2H0=', 'base64').toString('ascii');
+  var unbase64Salt = new Buffer(nconf.get('adminPasswordSalt'), 'base64');
   crypto.pbkdf2(suppliedPassword, unbase64Salt, 100000, 512, function(err, key) {
     if (err) throw err;
 
