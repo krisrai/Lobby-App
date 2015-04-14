@@ -16,6 +16,7 @@ block content
     h2 &nbsp;
 
     form#business_form(action="flow", method="post", autocomplete="off")
+      input(type='hidden', name='_csrf', value=token)
       p What is the name of your company?*
       input#company_name(type="text", name="company_name", size="40", class="required", minlength="1")
       p What is your job title?
