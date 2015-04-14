@@ -16,6 +16,7 @@ block content
     h2 &nbsp;
 
     form#email_form(action="sign", method="post", autocomplete="off")
+      input(type='hidden', name='_csrf', value=token)
       p What is your email address?
       input#email(type="text", name="email", size="40", class="email")
       br

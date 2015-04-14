@@ -14,6 +14,7 @@ block content
     h2 What is your reason for visiting?
 
     form#visit_reason_form(action="flow", method="post")
+      input(type='hidden', name='_csrf', value=token)
       input#visit_reason(type="hidden", name="visit_reason")
       each reason, i in reasons
         .reason
