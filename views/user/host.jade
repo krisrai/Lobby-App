@@ -95,6 +95,7 @@ block content
     h1 You're almost done!
     br
     form#host_form(action="flow", method="post", name="host_form")
+      input(type='hidden', name='_csrf', value=token)
       p Who will you be seeing?
       input#host_name(name="host_name", type="text", size="40", autocomplete="off")
       #host_error This person is not registered in our system. <br> Click on the Next button again to skip this question anyway.

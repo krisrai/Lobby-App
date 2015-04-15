@@ -16,6 +16,7 @@ block content
     h2 &nbsp;
 
     form(action="flow", method="post", autocomplete="off")
+      input(type='hidden', name='_csrf', value=token)
       p What is your badge number?
       input#badge_number(type="text", name="badge_number", size="20", class="required")
 
