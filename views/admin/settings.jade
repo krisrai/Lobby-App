@@ -148,6 +148,7 @@ block content
       img(src="images/ajax-loader.gif")
 
     form#company_logo(enctype="multipart/form-data")
+      input(type='hidden', name='_csrf', value=token)
       label Company logo (path to the new image; must be a PNG file)
       br
       input(type="file", size="40")

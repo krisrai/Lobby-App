@@ -18,6 +18,7 @@ block content
     br
 
     form(action="check_signout", method="post", id="name_form", autocomplete="off")
+      input(type='hidden', name='_csrf', value=token)
       p What is your first name?
       input(type="text", id="first_name", name="first_name", size="40", class="required", minlength="1")
       br

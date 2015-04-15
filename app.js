@@ -53,6 +53,11 @@ app.configure(function(){
     , secret: 'LobbyApp'
   }));
   app.use(express.methodOverride());
+  app.use(express.csrf());
+  app.use(function(req, res, next){
+    res.locals.token = req.session._csrf;
+    next();
+  });
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });

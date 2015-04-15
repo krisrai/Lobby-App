@@ -66,6 +66,7 @@ block content
     br
 
     form#hosts_update(enctype="multipart/form-data")
+      input(type='hidden', name='_csrf', value=token)
       label Upload a new list of hosts (must be a CSV file; will get rid of the current list of hosts)
       br
       input(type="file", size="40")
